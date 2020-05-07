@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/kristerkari/react-native-svg-transformer/master/images/react-native-logo.png" width="150"></p>
+<p align="center"><img src="https://reactnative.dev/img/header_logo.svg" width="200"></p>
 
 ## Application
 
