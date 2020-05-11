@@ -2,6 +2,7 @@ import {IN_LOADING, END_LOADING} from '../stores/ActionType';
 
 const INITIAL_STATE = {
   loading: true,
+  loadingSeconds: 0,
 };
 
 export default function(state = INITIAL_STATE, action) {
