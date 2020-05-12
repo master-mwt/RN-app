@@ -1,15 +1,24 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text, ActivityIndicator} from 'react-native';
+import {sLoadedTvShow} from '../reducers/AppReducer';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchTvShowDetails} from '../actions';
 
-export default class HomePage extends Component {
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>Hello World</Text>
-        <ActivityIndicator size={'large'} color={'purple'} />
-      </SafeAreaView>
-    );
-  }
+export default function() {
+  const tvshow = useSelector(sLoadedTvShow);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTvShowDetails());
+  }, []);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.text}>Hello World</Text>
+      <Text>{tvshow}</Text>
+      <ActivityIndicator size={'large'} color={'purple'} />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

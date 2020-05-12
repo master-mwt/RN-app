@@ -1,12 +1,18 @@
-import {IN_LOADING, END_LOADING} from '../stores/ActionType';
+import {
+  IN_LOADING,
+  END_LOADING,
+  TV_SHOW_GET_DETAIL,
+} from '../stores/ActionType';
 
 const INITIAL_STATE = {
   loading: true,
   loadingSeconds: 0,
+  tvshow: null,
 };
 
-const sApp = state => state.app;
-export const sAppLoading = state => sApp(state).loading;
+const sTvShow = state => state.tvshow;
+export const sLoadedTvShow = state => sTvShow(state).tvshow;
+export const sLoadingTvShow = state => sTvShow(state).loading;
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -18,6 +24,22 @@ export default function(state = INITIAL_STATE, action) {
     case END_LOADING:
       return {
         ...state,
+        loading: false,
+      };
+    case `${TV_SHOW_GET_DETAIL}_PENDING`:
+      return {
+        ...state,
+        loading: true,
+      };
+    case `${TV_SHOW_GET_DETAIL}_REJECTED`:
+      return {
+        ...state,
+        loading: false,
+      };
+    case `${TV_SHOW_GET_DETAIL}_FULFILLED`:
+      return {
+        ...state,
+        tvshow: action.payload.tvshow,
         loading: false,
       };
     default:
