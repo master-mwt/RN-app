@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   tvshow: null,
 };
 
-const sTvShow = state => state.tvshow;
+const sTvShow = state => state.app;
 export const sLoadedTvShow = state => sTvShow(state).tvshow;
 export const sLoadingTvShow = state => sTvShow(state).loading;
 

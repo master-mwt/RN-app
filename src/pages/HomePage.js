@@ -15,8 +15,7 @@ export default function() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.text}>Hello World</Text>
-      <Text>{tvshow}</Text>
-      <ActivityIndicator size={'large'} color={'purple'} />
+      <Text>{tvshow.first_air_date}</Text>
     </SafeAreaView>
   );
 }
