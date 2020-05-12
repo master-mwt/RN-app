@@ -7,33 +7,37 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {sLoadedTvShow} from '../reducers/AppReducer';
+import {sLoadedPopularsTvShows, sLoadedTvShow} from '../reducers/AppReducer';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchTvShowDetails} from '../actions';
+import {fetchPopularTvShows, fetchTvShowDetails} from '../actions';
 
 export default function() {
   const tvshow = useSelector(sLoadedTvShow);
+  const popularTvShows = useSelector(sLoadedPopularsTvShows);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchTvShowDetails());
-  }, [dispatch]);
+    dispatch(fetchPopularTvShows());
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.card_container}>
-        <TouchableOpacity style={styles.card}>
-          <Image
-            style={styles.card_image}
-            source={{uri: 'https://reactjs.org/logo-og.png'}}
-          />
-          <View style={styles.card_text_container}>
-            <Text numberOfLines={2} style={styles.card_text}>
-              hello world string string string str string
-            </Text>
+      { popularTvShows.results.map((tvShow, key) => (
+          <View style={styles.card_container}>
+            <TouchableOpacity style={styles.card}>
+              <Image
+                  style={styles.card_image}
+                  source={{uri: 'https://reactjs.org/logo-og.png'}}
+              />
+              <View style={styles.card_text_container}>
+                <Text numberOfLines={2} style={styles.card_text}>
+                  {tvShow.original_name}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
+      )) }
     </SafeAreaView>
   );
 }
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   card_container: {
-    width: '33,3333%',
+    width: '33.3333%',
     padding: 10,
   },
   card: {
