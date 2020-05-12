@@ -5,6 +5,9 @@ const INITIAL_STATE = {
   loadingSeconds: 0,
 };
 
+const sApp = state => state.app;
+export const sAppLoading = state => sApp(state).loading;
+
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case IN_LOADING:

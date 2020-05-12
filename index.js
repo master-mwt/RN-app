@@ -8,14 +8,15 @@ import {AppRegistry} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
 
-import LoadingPage from './src/pages/LoadingPage';
+//import LoadingPage from './src/pages/LoadingPage';
+//[on PersistGate tag: loading={<LoadingPage />}
 
 const {store, persistor} = createStore();
 
 const Root = function() {
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<LoadingPage />}>
+      <PersistGate persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>
