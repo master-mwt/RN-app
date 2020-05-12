@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {
   SafeAreaView,
+  FlatList,
   StyleSheet,
   Text,
   View,
@@ -19,47 +20,61 @@ export default function() {
   useEffect(() => {
     dispatch(fetchTvShowDetails());
     dispatch(fetchPopularTvShows());
-  }, []);
+  }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
-      { popularTvShows.results.map((tvShow, key) => (
+      <FlatList
+        data={popularTvShows.results}
+        style={styles.flat_list}
+        numColumns={3}
+        renderItem={({item}) => (
           <View style={styles.card_container}>
             <TouchableOpacity style={styles.card}>
               <Image
-                  style={styles.card_image}
-                  source={{uri: 'https://reactjs.org/logo-og.png'}}
+                style={styles.card_image}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
+                }}
               />
               <View style={styles.card_text_container}>
-                <Text numberOfLines={2} style={styles.card_text}>
-                  {tvShow.original_name}
+                <Text numberOfLines={1} style={styles.card_text}>
+                  {item.name}
                 </Text>
               </View>
             </TouchableOpacity>
           </View>
-      )) }
+        )}
+        keyExtractor={item => item.id}
+        onEndReached={() => console.log('end reached')}
+        onEndReachedThreshold={0.5}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flex: 1, // maybe useless
+    flexDirection: 'row', // maybe useless
+    flexWrap: 'wrap', // maybe useless
+    backgroundColor: '#ccc',
+  },
+  flat_list: {
+    height: '100%',
   },
   card_container: {
     width: '33.3333%',
-    padding: 10,
+    padding: 2,
   },
   card: {
-    backgroundColor: '#888888',
+    backgroundColor: '#555',
     padding: 3,
     borderRadius: 5,
   },
   card_image: {
-    width: '100%',
-    height: 150,
+    width: '100%', // maybe useless
+    height: 170,
     borderRadius: 5,
   },
   card_text_container: {
@@ -67,7 +82,7 @@ const styles = StyleSheet.create({
   },
   card_text: {
     textAlign: 'center',
-    color: 'white',
+    color: '#fff',
     fontSize: 15,
     fontWeight: 'bold',
   },
