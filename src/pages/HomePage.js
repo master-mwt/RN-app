@@ -8,22 +8,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {sLoadedPopularsTvShows} from '../reducers/AppReducer';
+import {sTvShowsGetPopular} from '../reducers/TvShowReducer';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchPopularTvShows} from '../actions';
+import {tvShowsGetPopularFetch} from '../actions';
 
 export default function() {
-  const popularTvShows = useSelector(sLoadedPopularsTvShows);
+  const tv_shows_popular = useSelector(sTvShowsGetPopular);
   const dispatch = useDispatch();
 
+  console.log(tv_shows_popular);
+
   useEffect(() => {
-    dispatch(fetchPopularTvShows());
+    dispatch(tvShowsGetPopularFetch());
   }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={popularTvShows.results}
+        data={tv_shows_popular.results}
         style={styles.flat_list}
         numColumns={3}
         renderItem={({item}) => (

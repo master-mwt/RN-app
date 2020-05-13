@@ -1,1 +1,1 @@
-export * from './AppActions';
+export * from './TvShowActions';

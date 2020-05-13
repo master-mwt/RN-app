@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 
 const sTvShow = state => state.tv_show;
 export const sTvShowGetDetail = state => sTvShow(state).tv_show_get_detail;
-export const sTvShowGetPopular = state => sTvShow(state).tv_shows_get_popular;
+export const sTvShowsGetPopular = state => sTvShow(state).tv_shows_get_popular;
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
