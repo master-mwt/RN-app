@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
@@ -16,39 +17,46 @@ export default function() {
   const tv_shows_popular = useSelector(sTvShowsGetPopular);
   const dispatch = useDispatch();
 
-  console.log(tv_shows_popular);
-
   useEffect(() => {
     dispatch(tvShowsGetPopularFetch());
   }, [dispatch]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={tv_shows_popular.results}
-        style={styles.flat_list}
-        numColumns={3}
-        renderItem={({item}) => (
-          <View style={styles.card_container}>
-            <TouchableOpacity style={styles.card}>
-              <Image
-                style={styles.card_image}
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
-                }}
-              />
-              <View style={styles.card_text_container}>
-                <Text numberOfLines={1} style={styles.card_text}>
-                  {item.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={item => item.id}
-        onEndReached={() => console.log('end reached')}
-        onEndReachedThreshold={0.5}
-      />
+      {!tv_shows_popular && (
+        <ActivityIndicator
+          style={styles.loading_icon}
+          size="large"
+          color="#000"
+        />
+      )}
+      {tv_shows_popular && (
+        <FlatList
+          data={tv_shows_popular.results}
+          style={styles.flat_list}
+          numColumns={3}
+          renderItem={({item}) => (
+            <View style={styles.card_container}>
+              <TouchableOpacity style={styles.card}>
+                <Image
+                  style={styles.card_image}
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
+                  }}
+                />
+                <View style={styles.card_text_container}>
+                  <Text numberOfLines={1} style={styles.card_text}>
+                    {item.name}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={item => item.id}
+          onEndReached={() => console.log('end reached')}
+          onEndReachedThreshold={0.5}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -85,5 +93,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 15,
     fontWeight: 'bold',
+  },
+  loading_icon: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
