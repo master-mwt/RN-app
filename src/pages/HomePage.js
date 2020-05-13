@@ -1,24 +1,22 @@
 import React, {useEffect} from 'react';
 import {
-  SafeAreaView,
   FlatList,
+  Image,
+  SafeAreaView,
   StyleSheet,
   Text,
-  View,
-  Image,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {sLoadedPopularsTvShows, sLoadedTvShow} from '../reducers/AppReducer';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchPopularTvShows, fetchTvShowDetails} from '../actions';
+import {sLoadedPopularsTvShows} from '../reducers/AppReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchPopularTvShows} from '../actions';
 
 export default function() {
-  const tvshow = useSelector(sLoadedTvShow);
   const popularTvShows = useSelector(sLoadedPopularsTvShows);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTvShowDetails());
     dispatch(fetchPopularTvShows());
   }, [dispatch]);
 

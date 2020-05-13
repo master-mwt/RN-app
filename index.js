@@ -13,7 +13,7 @@ import {name as appName} from './app.json';
 
 const {store, persistor} = createStore();
 
-const Root = function() {
+const Root = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>

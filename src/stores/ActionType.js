@@ -1,4 +1,4 @@
 export const IN_LOADING = 'IN_LOADING';
 export const END_LOADING = 'END_LOADING';
 export const TV_SHOW_GET_DETAIL = 'TV_SHOW_GET_DETAIL';
-export const POPULAR_TV_SHOWS = 'POPULAR_TV_SHOWS';
+export const TV_SHOWS_GET_POPULAR = 'TV_SHOWS_GET_POPULAR';
