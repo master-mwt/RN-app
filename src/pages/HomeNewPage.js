@@ -29,16 +29,16 @@ export default class HomeNewPage extends Component {
     this.setState({loading: true});
 
     API.getPopularTvShows(page)
-        .then((res) => {
-          this.setState({
-            data: [...this.state.data, ...res.results],
-            loading: false,
-          });
-        })
-        .catch((error)=>{
-          console.log(error);
-          this.setState({loading: false});
+      .then(res => {
+        this.setState({
+          data: [...this.state.data, ...res.results],
+          loading: false,
         });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({loading: false});
+      });
   };
 
   handleLoadMore = () => {
@@ -68,7 +68,6 @@ export default class HomeNewPage extends Component {
                   this.props.navigation.navigate('details', {
                     item: {
                       id: item.id,
-                      name: item.name,
                     },
                   });
                 }}>
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1, // maybe useless
     flexDirection: 'row', // maybe useless
     flexWrap: 'wrap', // maybe useless
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
   },
   flat_list: {
     height: '100%',
