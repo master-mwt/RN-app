@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+import * as API from '../api/Api';
 import {
   FlatList,
   Image,
@@ -26,21 +26,19 @@ export default class HomeNewPage extends Component {
 
   makeRemoteRequest = () => {
     const {page} = this.state;
-    const url = `https://api.themoviedb.org/3/tv/popular?api_key=609fbad41366e27a4f7a58d8d1760a3b&language=en-US&page=${page}`;
     this.setState({loading: true});
-    axios
-      .get(url)
-      .then(res => res.data)
-      .then(res => {
-        this.setState({
-          data: [...this.state.data, ...res.results],
-          loading: false,
+
+    API.getPopularTvShows(page)
+        .then((res) => {
+          this.setState({
+            data: [...this.state.data, ...res.results],
+            loading: false,
+          });
+        })
+        .catch((error)=>{
+          console.log(error);
+          this.setState({loading: false});
         });
-      })
-      .catch(error => {
-        console.log(error);
-        this.setState({loading: false});
-      });
   };
 
   handleLoadMore = () => {
