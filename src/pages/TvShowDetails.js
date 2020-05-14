@@ -10,7 +10,8 @@ export default class TvShowDetails extends Component {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         {/*stampare l'oggetto e magari fare il run della query*/}
-        <Text style={{fontSize: 30}}>obj id</Text>
+        <Text style={{fontSize: 30}}>{this.props.route.params.item.id}</Text>
+        <Text style={{fontSize: 30}}>{this.props.route.params.item.name}</Text>
       </View>
     );
   }

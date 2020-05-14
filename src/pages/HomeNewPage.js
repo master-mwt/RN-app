@@ -67,7 +67,12 @@ export default class HomeNewPage extends Component {
                 style={styles.card}
                 onPress={() => {
                   // passare l oggetto alla pagina (anche l id)
-                  this.props.navigation.navigate('details');
+                  this.props.navigation.navigate('details', {
+                    item: {
+                      id: item.id,
+                      name: item.name,
+                    },
+                  });
                 }}>
                 <Image
                   style={styles.card_image}

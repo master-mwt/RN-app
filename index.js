@@ -13,14 +13,16 @@ import {name as appName} from './app.json';
 
 const {store, persistor} = createStore();
 
-const Root = () => {
-  return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  );
-};
+class Root extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    );
+  }
+}
 
 AppRegistry.registerComponent(appName, () => Root);
