@@ -63,7 +63,12 @@ export default class HomeNewPage extends Component {
           numColumns={3}
           renderItem={({item}) => (
             <View style={styles.card_container}>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  // passare l oggetto alla pagina (anche l id)
+                  this.props.navigation.navigate('details');
+                }}>
                 <Image
                   style={styles.card_image}
                   source={{
