@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {
-  SafeAreaView,
-  Text,
-  View,
-  StyleSheet,
   ActivityIndicator,
   Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import * as API from '../api/Api';
 
@@ -39,24 +40,46 @@ export default class TvShowDetails extends Component {
         )}
         {this.state.tv_show && (
           <View style={styles.container}>
-            <View style={styles.box}>
-              <Image
-                style={styles.backdrop_image}
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500/${
-                    this.state.tv_show.backdrop_path
-                  }`,
-                }}
-              />
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.title}>{this.state.tv_show.name}</Text>
-            </View>
-            <View style={styles.box}>
-              <TouchableOpacity style={styles.add_button}>
-                <Text style={styles.add_button_text}>add to collection</Text>
-              </TouchableOpacity>
-            </View>
+            <ScrollView>
+              <View style={styles.box}>
+                <Image
+                    style={styles.backdrop_image}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500/${
+                          this.state.tv_show.backdrop_path
+                      }`,
+                    }}
+                />
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.title}>{this.state.tv_show.name}</Text>
+              </View>
+              <View style={styles.box}>
+                <TouchableOpacity style={styles.add_button}>
+                  <Text style={styles.add_button_text}>add to collection</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.box}>
+                { this.state.tv_show.seasons.map((season, key) => (
+                  <TouchableOpacity
+                      key={season.id}
+                      style={styles.add_button}
+                      onPress={()=>{
+                        this.props.navigation.navigate('season', {
+                          item: {
+                            tv_show_id: this.state.tv_show.id,
+                            season_number: season.season_number,
+                          },
+                        });
+                      }}
+                  >
+                    <Text style={styles.add_button_text}>{season.name}</Text>
+                  </TouchableOpacity>
+                )) }
+              </View>
+
+            </ScrollView>
           </View>
         )}
       </SafeAreaView>
@@ -101,6 +124,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#4fb',
     borderRadius: 5,
+    marginBottom: 5,
   },
   add_button_text: {
     textAlign: 'center',

@@ -4,11 +4,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-//import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-
 import HomePage from '../pages/HomePage';
 import HomeNewPage from '../pages/HomeNewPage';
 import TvShowDetails from '../pages/TvShowDetails';
+import TopRatedTvShowPage from '../pages/TopRatedTvShowPage';
+import SearchPage from '../pages/SearchPage';
+import SeasonPage from '../pages/SeasonPage';
+import EpisodePage from '../pages/EpisodePage';
+//import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
@@ -24,7 +27,8 @@ export default class RootNavigator extends Component {
           name="home_new"
           component={HomeNewPage}
         />
-        <MaterialTopTabNavigator.Screen name="home_old" component={HomePage} />
+        <MaterialTopTabNavigator.Screen name="top_rated" component={TopRatedTvShowPage} />
+        {/* <MaterialTopTabNavigator.Screen name="home_old" component={HomePage} /> */}
       </MaterialTopTabNavigator.Navigator>
     );
 
@@ -32,6 +36,8 @@ export default class RootNavigator extends Component {
       <StackNavigator.Navigator initialRouteName="main">
         <StackNavigator.Screen name="main" children={createHomeTopTab} />
         <StackNavigator.Screen name="details" component={TvShowDetails} />
+        <StackNavigator.Screen name="season" component={SeasonPage} />
+        <StackNavigator.Screen name="episode" component={EpisodePage} />
       </StackNavigator.Navigator>
     );
 
@@ -39,6 +45,7 @@ export default class RootNavigator extends Component {
       <NavigationContainer>
         <BottomTabNavigator.Navigator initialRouteName="main">
           <BottomTabNavigator.Screen name="main" component={createHomeStack} />
+          <BottomTabNavigator.Screen name="search" component={SearchPage} />
         </BottomTabNavigator.Navigator>
       </NavigationContainer>
     );

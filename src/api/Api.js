@@ -156,6 +156,27 @@ function getTvShowCredits(tvShowID) {
   return axiosGetRequest(link);
 }
 
+/**
+ * Search a TvShow given a query string
+ *
+ * @returns {Promise<* | void>}
+ * @param query The query string
+ * @param page The requested page
+ */
+function searchTvShow(query, page = 1) {
+  let link =
+      API_URL +
+      'search/tv' +
+      '?api_key=' +
+      API_KEY +
+      '&query=' +
+      query +
+      '&page=' +
+      page +
+      '&language=en-US';
+  return axiosGetRequest(link);
+}
+
 export {
   getTvShowDetail,
   getPopularTvShows,
@@ -164,4 +185,5 @@ export {
   getTvShowSeason,
   getTvShowEpisode,
   getTvShowCredits,
+  searchTvShow,
 };
