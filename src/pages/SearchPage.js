@@ -27,6 +27,7 @@ export default class SearchPage extends Component {
         text: text,
       });
       if (this.state.text.length !== 0) {
+        this.setState({loading: true});
         API.searchTvShow(this.state.text)
           .then(res => {
             this.setState({
@@ -48,9 +49,8 @@ export default class SearchPage extends Component {
 
   makeRemoteRequest = () => {
     const {page} = this.state;
-    this.setState({loading: true});
-
     if (this.state.text.length !== 0) {
+      this.setState({loading: true});
       API.searchTvShow(this.state.text, page)
         .then(res => {
           this.setState({
@@ -102,6 +102,7 @@ export default class SearchPage extends Component {
               data={this.state.data}
               style={styles.flat_list}
               numColumns={3}
+              showsVerticalScrollIndicator={false}
               renderItem={({item}) => (
                 <View style={styles.card_container}>
                   <TouchableOpacity
