@@ -13,6 +13,7 @@ import TopRatedTvShowPage from '../pages/TopRatedTvShowPage';
 import SearchPage from '../pages/SearchPage';
 import SeasonPage from '../pages/SeasonPage';
 import EpisodePage from '../pages/EpisodePage';
+import FileHandlePage from '../pages/FileHandlePage';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
@@ -127,6 +128,16 @@ export default class RootNavigator extends Component {
               tabBarLabel: 'explore',
               tabBarIcon: ({color}) => (
                 <Icon name="ios-home" color={color} size={26} />
+              ),
+            }}
+          />
+          <BottomTabNavigator.Screen
+            name="file"
+            component={FileHandlePage}
+            options={{
+              tabBarLabel: 'file',
+              tabBarIcon: ({color}) => (
+                <Icon name="ios-menu" color={color} size={26} />
               ),
             }}
           />

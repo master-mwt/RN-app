@@ -1,6 +1,6 @@
-/*import React, {Component} from 'react';
+import React, {Component} from 'react';
 import * as RNFS from 'react-native-fs';
-import {Text, View} from 'react-native';
+import {Text, SafeAreaView, Platform} from 'react-native';
 
 export default class FileHandlePage extends Component {
   constructor(props) {
@@ -11,7 +11,10 @@ export default class FileHandlePage extends Component {
   }
 
   componentDidMount() {
-    let path = RNFS.ExternalDirectoryPath + '/file.txt';
+    let path =
+      Platform.OS === 'ios'
+        ? RNFS.DocumentDirectoryPath + '/file.txt'
+        : RNFS.ExternalDirectoryPath + '/file.txt';
     console.log('File path: ' + path);
     RNFS.unlink(path)
       .then(r => console.log('unlink file'))
@@ -42,10 +45,9 @@ export default class FileHandlePage extends Component {
 
   render() {
     return (
-      <View>
+      <SafeAreaView>
         <Text>Scrittura e la lettura di un file nella console</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 }
-*/
