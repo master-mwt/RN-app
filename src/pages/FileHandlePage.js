@@ -7,14 +7,15 @@ export default class FileHandlePage extends Component {
     super(props);
     this.state = {
       test: 'si va',
+      content: '',
     };
   }
 
   componentDidMount() {
     let path =
       Platform.OS === 'ios'
-        ? RNFS.DocumentDirectoryPath + '/file.txt'
-        : RNFS.ExternalDirectoryPath + '/file.txt';
+        ? RNFS.DocumentDirectoryPath + '/file.json'
+        : RNFS.ExternalDirectoryPath + '/file.json';
     console.log('File path: ' + path);
     RNFS.unlink(path)
       .then(r => console.log('unlink file'))
@@ -35,8 +36,11 @@ export default class FileHandlePage extends Component {
 
   readFile(path) {
     RNFS.readFile(path, 'utf8')
-      .then(content => {
-        console.log('content: ' + content);
+      .then(res => {
+        console.log('content: ' + res);
+        this.setState({
+          content: res,
+        });
       })
       .catch(error => {
         console.log('read error');
@@ -45,8 +49,9 @@ export default class FileHandlePage extends Component {
 
   render() {
     return (
-      <SafeAreaView>
-        <Text>Scrittura e la lettura di un file nella console</Text>
+      <SafeAreaView
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>{this.state.content}</Text>
       </SafeAreaView>
     );
   }
