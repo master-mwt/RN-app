@@ -28,12 +28,7 @@ function axiosGetRequest(link) {
  */
 function getTvShowDetail(tvShowID) {
   let link =
-    API_URL +
-      'tv/' +
-      tvShowID +
-      '?api_key=' +
-      API_KEY +
-      '&language=en-US';
+    API_URL + 'tv/' + tvShowID + '?api_key=' + API_KEY + '&language=en-US';
   return axiosGetRequest(link);
 }
 
@@ -137,7 +132,6 @@ function getTvShowEpisode(tvShowID, seasonNumber, episodeNumber) {
   return axiosGetRequest(link);
 }
 
-
 /**
  * Get the credits of a TvShow (cast and crew)
  *
@@ -146,13 +140,13 @@ function getTvShowEpisode(tvShowID, seasonNumber, episodeNumber) {
  */
 function getTvShowCredits(tvShowID) {
   let link =
-      API_URL +
-      'tv/' +
-      tvShowID +
-      '/credits' +
-      '?api_key=' +
-      API_KEY +
-      '&language=en-US';
+    API_URL +
+    'tv/' +
+    tvShowID +
+    '/credits' +
+    '?api_key=' +
+    API_KEY +
+    '&language=en-US';
   return axiosGetRequest(link);
 }
 
@@ -165,15 +159,15 @@ function getTvShowCredits(tvShowID) {
  */
 function searchTvShow(query, page = 1) {
   let link =
-      API_URL +
-      'search/tv' +
-      '?api_key=' +
-      API_KEY +
-      '&query=' +
-      query +
-      '&page=' +
-      page +
-      '&language=en-US';
+    API_URL +
+    'search/tv' +
+    '?api_key=' +
+    API_KEY +
+    '&query=' +
+    query +
+    '&page=' +
+    page +
+    '&language=en-US';
   return axiosGetRequest(link);
 }
 

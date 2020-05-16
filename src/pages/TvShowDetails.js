@@ -43,12 +43,12 @@ export default class TvShowDetails extends Component {
             <ScrollView>
               <View style={styles.box}>
                 <Image
-                    style={styles.backdrop_image}
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/w500/${
-                          this.state.tv_show.backdrop_path
-                      }`,
-                    }}
+                  style={styles.backdrop_image}
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500/${
+                      this.state.tv_show.backdrop_path
+                    }`,
+                  }}
                 />
               </View>
               <View style={styles.box}>
@@ -61,24 +61,22 @@ export default class TvShowDetails extends Component {
               </View>
 
               <View style={styles.box}>
-                { this.state.tv_show.seasons.map((season, key) => (
+                {this.state.tv_show.seasons.map((season, key) => (
                   <TouchableOpacity
-                      key={season.id}
-                      style={styles.add_button}
-                      onPress={()=>{
-                        this.props.navigation.navigate('season', {
-                          item: {
-                            tv_show_id: this.state.tv_show.id,
-                            season_number: season.season_number,
-                          },
-                        });
-                      }}
-                  >
+                    key={season.id}
+                    style={styles.add_button}
+                    onPress={() => {
+                      this.props.navigation.navigate('tv_show_season', {
+                        item: {
+                          tv_show_id: this.state.tv_show.id,
+                          season_number: season.season_number,
+                        },
+                      });
+                    }}>
                     <Text style={styles.add_button_text}>{season.name}</Text>
                   </TouchableOpacity>
-                )) }
+                ))}
               </View>
-
             </ScrollView>
           </View>
         )}
