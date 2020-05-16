@@ -26,9 +26,9 @@ export default class SearchPage extends Component {
       this.setState({
         text: text,
       });
-      if (this.state.text.length !== 0) {
+      if (text && text.length !== 0) {
         this.setState({loading: true});
-        API.searchTvShow(this.state.text)
+        API.searchTvShow(text)
           .then(res => {
             this.setState({
               data: [...res.results],
@@ -41,10 +41,6 @@ export default class SearchPage extends Component {
           });
       }
     }.bind(this);
-  }
-
-  componentDidMount() {
-    this.makeRemoteRequest();
   }
 
   makeRemoteRequest = () => {
