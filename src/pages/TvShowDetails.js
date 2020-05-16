@@ -8,14 +8,19 @@ import {
   Text,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
 import * as API from '../api/Api';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class TvShowDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tv_show: null,
+      in_collection: false,
+      add_button_text: 'add to collection',
+      remove_button_text: 'remove from collection',
     };
   }
 
@@ -39,46 +44,122 @@ export default class TvShowDetails extends Component {
           />
         )}
         {this.state.tv_show && (
-          <View style={styles.container}>
-            <ScrollView>
-              <View style={styles.box}>
-                <Image
-                  style={styles.backdrop_image}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${
-                      this.state.tv_show.backdrop_path
-                    }`,
-                  }}
-                />
+          <ScrollView style={styles.scrollview_container}>
+            <View style={styles.backdrop_image_container}>
+              <Image
+                style={styles.backdrop_image}
+                source={{
+                  uri: `https://image.tmdb.org/t/p/w500/${
+                    this.state.tv_show.backdrop_path
+                  }`,
+                }}
+              />
+            </View>
+            <View style={styles.box}>
+              <Text style={styles.title}>{this.state.tv_show.name}</Text>
+            </View>
+            <View style={styles.box}>
+              <Text style={styles.overview}>{this.state.tv_show.overview}</Text>
+            </View>
+            <View style={styles.social_container}>
+              <View style={styles.social_container_col}>
+                <Icon name="ios-star-outline" color="#000" size={35} />
+                <Text style={styles.social_text}>
+                  {this.state.tv_show.vote_average}
+                </Text>
               </View>
-              <View style={styles.box}>
-                <Text style={styles.title}>{this.state.tv_show.name}</Text>
+              <View style={styles.social_container_col}>
+                <Icon name="ios-eye" color="#000" size={35} />
+                <Text style={styles.social_text}>
+                  {this.state.tv_show.vote_count}
+                </Text>
               </View>
-              <View style={styles.box}>
+              <View style={styles.social_container_col}>
+                <Icon name="ios-trending-up" color="#000" size={35} />
+                <Text style={styles.social_text}>
+                  {Math.round(this.state.tv_show.popularity, 1) + ' %'}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.add_button_container}>
+              {!this.state.in_collection && (
                 <TouchableOpacity style={styles.add_button}>
-                  <Text style={styles.add_button_text}>add to collection</Text>
+                  <Icon
+                    name="ios-add-circle-outline"
+                    size={20}
+                    color="#000"
+                    style={styles.add_button_icon}
+                  />
+                  <Text style={styles.add_button_text}>
+                    {this.state.add_button_text}
+                  </Text>
                 </TouchableOpacity>
-              </View>
+              )}
+              {!this.state.in_collection && (
+                <TouchableOpacity style={styles.remove_button}>
+                  <Icon
+                    name="ios-remove-circle-outline"
+                    size={20}
+                    color="#000"
+                    style={styles.add_button_icon}
+                  />
+                  <Text style={styles.add_button_text}>
+                    {this.state.remove_button_text}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
 
-              <View style={styles.box}>
-                {this.state.tv_show.seasons.map((season, key) => (
-                  <TouchableOpacity
-                    key={season.id}
-                    style={styles.add_button}
-                    onPress={() => {
-                      this.props.navigation.navigate('tv_show_season', {
-                        item: {
-                          tv_show_id: this.state.tv_show.id,
-                          season_number: season.season_number,
-                        },
-                      });
-                    }}>
-                    <Text style={styles.add_button_text}>{season.name}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </ScrollView>
-          </View>
+            <View style={styles.box}>
+              <Text style={styles.section_title}>Last Episode</Text>
+            </View>
+            <View style={styles.episode_container}>
+              <Text style={styles.episode_number}>
+                {this.state.tv_show.last_episode_to_air.episode_number}x
+                {this.state.tv_show.last_episode_to_air.season_number}
+              </Text>
+              <Text numberOfLines={1} style={styles.episode_text}>
+                {this.state.tv_show.last_episode_to_air.name}
+              </Text>
+            </View>
+
+            <View style={styles.box}>
+              <Text style={styles.section_title}>Seasons</Text>
+            </View>
+            <FlatList
+              data={this.state.tv_show.seasons}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  style={styles.card}
+                  onPress={() => {
+                    // passare l oggetto alla pagina (anche l id)
+                    this.props.navigation.navigate('tv_show_season', {
+                      item: {
+                        tv_show_id: this.state.tv_show.id,
+                        id: item.season_number,
+                      },
+                    });
+                  }}>
+                  <Image
+                    style={styles.card_image}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500/${
+                        item.poster_path
+                      }`,
+                    }}
+                  />
+                  <View style={styles.card_text_container}>
+                    <Text numberOfLines={1} style={styles.card_text}>
+                      {item.name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              keyExtractor={item => item.season_number}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            />
+          </ScrollView>
         )}
       </SafeAreaView>
     );
@@ -91,43 +172,152 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // maybe useless
     flexWrap: 'wrap', // maybe useless
     backgroundColor: '#fff',
-    paddingVertical: 5,
   },
   loading_icon: {
     flex: 1,
     justifyContent: 'center',
   },
-  container: {
+  scrollview_container: {
+    height: '100%',
+  },
+  /* container: {
     flex: 1,
     paddingHorizontal: 10,
+  }, */
+  backdrop_image_container: {
+    padding: 10,
   },
   backdrop_image: {
     width: '100%',
-    height: 200,
+    height: 250,
     borderRadius: 5,
+  },
+  social_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  social_container_col: {
+    flexDirection: 'column', // maybe useful
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  social_text: {
+    fontSize: 18,
+    backgroundColor: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    //borderRadius: 5,
+    padding: 5,
+    //overflow: 'hidden',
+    color: '#000',
   },
   box: {
-    paddingVertical: 5,
+    paddingVertical: 2,
+    paddingHorizontal: 2,
   },
   title: {
-    fontSize: 25,
-    backgroundColor: '#ddd',
+    fontSize: 22,
+    backgroundColor: '#fff',
     textAlign: 'center',
-    borderRadius: 5,
+    fontWeight: 'bold',
+    //borderRadius: 5,
     padding: 5,
+    //overflow: 'hidden',
+    color: '#000',
+  },
+  section_title: {
+    fontSize: 20,
+    backgroundColor: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    //borderRadius: 5,
+    padding: 5,
+    //overflow: 'hidden',
+    color: '#000',
+  },
+  overview: {
+    fontSize: 15,
+    backgroundColor: '#fff',
+    textAlign: 'left',
+    //borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     overflow: 'hidden',
     color: '#000',
   },
+  add_button_container: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
   add_button: {
     padding: 10,
-    backgroundColor: '#4fb',
+    backgroundColor: '#69f0ae',
     borderRadius: 5,
-    marginBottom: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  remove_button: {
+    padding: 10,
+    backgroundColor: '#ff5252',
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   add_button_text: {
-    textAlign: 'center',
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: '500',
     textTransform: 'uppercase',
+  },
+  add_button_icon: {
+    marginRight: 10,
+  },
+  card: {
+    backgroundColor: '#ccc',
+    padding: 3,
+    marginHorizontal: 2,
+    marginVertical: 1,
+    width: 130,
+    borderRadius: 5,
+  },
+  card_image: {
+    width: '100%', // maybe useless
+    height: 170,
+    borderRadius: 5,
+  },
+  card_text_container: {
+    padding: 3,
+  },
+  card_text: {
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  episode_container: {
+    flexDirection: 'row',
+    backgroundColor: '#ccc',
+    marginHorizontal: 10,
+    borderRadius: 5,
+    padding: 5,
+    alignItems: 'center',
+  },
+  episode_number: {
+    padding: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    borderRadius: 5,
+    backgroundColor: '#aaa',
+    overflow: 'hidden',
+  },
+  episode_text: {
+    marginLeft: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

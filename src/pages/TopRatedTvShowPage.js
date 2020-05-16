@@ -88,6 +88,7 @@ export default class TopRatedTvShowPage extends Component {
           keyExtractor={item => item.id}
           onEndReached={() => this.handleLoadMore()}
           onEndReachedThreshold={0.2}
+          showsVerticalScrollIndicator={false}
         />
       </SafeAreaView>
     );
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   card: {
-    backgroundColor: '#555',
+    backgroundColor: '#ccc',
     padding: 3,
     borderRadius: 5,
   },
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   card_text: {
     textAlign: 'center',
-    color: '#fff',
+    color: '#000',
     fontSize: 15,
     fontWeight: 'bold',
   },
