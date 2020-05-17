@@ -12,8 +12,11 @@ import {
 } from 'react-native';
 import * as API from '../api/Api';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
+import {addShowToCollection, removeShowFromCollection} from '../actions';
+import {connect} from 'react-redux';
 
-export default class TvShowDetails extends Component {
+class TvShowDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +29,13 @@ export default class TvShowDetails extends Component {
 
   componentDidMount() {
     API.getTvShowDetail(this.props.route.params.item.id).then(res => {
+      for (let i of this.props.collection) {
+        if (i.id === res.id) {
+          this.setState({
+            in_collection: true,
+          });
+        }
+      }
       this.setState({
         tv_show: res,
       });
@@ -83,7 +93,15 @@ export default class TvShowDetails extends Component {
             </View>
             <View style={styles.add_button_container}>
               {!this.state.in_collection && (
-                <TouchableOpacity style={styles.add_button}>
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({in_collection: true});
+                    this.props.addShowToCollection({
+                      id: this.state.tv_show.id,
+                      seen_episodes: [],
+                    });
+                  }}
+                  style={styles.add_button}>
                   <Icon
                     name="ios-add-circle-outline"
                     size={20}
@@ -95,8 +113,15 @@ export default class TvShowDetails extends Component {
                   </Text>
                 </TouchableOpacity>
               )}
-              {!this.state.in_collection && (
-                <TouchableOpacity style={styles.remove_button}>
+              {this.state.in_collection && (
+                <TouchableOpacity
+                  style={styles.remove_button}
+                  onPress={() => {
+                    this.setState({in_collection: false});
+                    this.props.removeShowFromCollection({
+                      id: this.state.tv_show.id,
+                    });
+                  }}>
                   <Icon
                     name="ios-remove-circle-outline"
                     size={20}
@@ -321,3 +346,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    collection: sTvShowGetUserShows(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addShowToCollection: function(show) {
+      dispatch(addShowToCollection(show));
+    },
+    removeShowFromCollection: function(show) {
+      dispatch(removeShowFromCollection(show));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TvShowDetails);

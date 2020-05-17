@@ -10,11 +10,16 @@ import {
   View,
 } from 'react-native';
 import * as API from '../api/Api';
+import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
+import {episodeNotSeen, episodeSeen} from '../actions';
+import {connect} from 'react-redux';
 
-export default class EpisodePage extends Component {
+class EpisodePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      tv_show_in_collection: false,
+      episode_seen: false,
       tv_episode: null,
     };
   }
@@ -25,6 +30,21 @@ export default class EpisodePage extends Component {
       this.props.route.params.item.season_number,
       this.props.route.params.item.episode_number,
     ).then(res => {
+      for (let i of this.props.collection) {
+        if (i.id === this.props.route.params.item.tv_show_id) {
+          this.setState({
+            tv_show_in_collection: true,
+          });
+
+          for (let j of i.seen_episodes) {
+            if (j === res.id) {
+              this.setState({
+                episode_seen: true,
+              });
+            }
+          }
+        }
+      }
       this.setState({
         tv_episode: res,
       });
@@ -55,6 +75,34 @@ export default class EpisodePage extends Component {
                   }}
                 />
               </View>
+              {this.state.tv_show_in_collection && !this.state.episode_seen && (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({episode_seen: true});
+                    this.props.episodeSeen({
+                      id: this.state.tv_episode.id,
+                      tv_show_id: this.props.route.params.item.tv_show_id,
+                    });
+                  }}
+                  style={styles.add_button}>
+                  <Text style={styles.add_button_text}>Segna come visto</Text>
+                </TouchableOpacity>
+              )}
+              {this.state.tv_show_in_collection && this.state.episode_seen && (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({episode_seen: false});
+                    this.props.episodeNotSeen({
+                      id: this.state.tv_episode.id,
+                      tv_show_id: this.props.route.params.item.tv_show_id,
+                    });
+                  }}
+                  style={styles.add_button}>
+                  <Text style={styles.add_button_text}>
+                    Segna come non visto
+                  </Text>
+                </TouchableOpacity>
+              )}
               <View style={styles.box}>
                 <Text style={styles.title}>{this.state.tv_episode.name}</Text>
               </View>
@@ -132,3 +180,25 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    collection: sTvShowGetUserShows(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    episodeSeen: function(episode) {
+      dispatch(episodeSeen(episode));
+    },
+    episodeNotSeen: function(episode) {
+      dispatch(episodeNotSeen(episode));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(EpisodePage);

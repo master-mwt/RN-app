@@ -1,48 +1,84 @@
-import {TV_SHOW_GET_DETAIL, TV_SHOWS_GET_POPULAR} from '../stores/ActionType';
+import {
+  EPISODE_NOT_SEEN,
+  EPISODE_SEEN,
+  TV_SHOW_ADDED_IN_COLLECTION,
+  TV_SHOW_REMOVED_FROM_COLLECTION,
+} from '../stores/ActionType';
 
 const INITIAL_STATE = {
-  loading: true,
-  tv_show_get_detail: null,
-  tv_shows_get_popular: null,
+  shows: [],
 };
 
 const sTvShow = state => state.tv_show;
-export const sTvShowGetDetail = state => sTvShow(state).tv_show_get_detail;
-export const sTvShowsGetPopular = state => sTvShow(state).tv_shows_get_popular;
+export const sTvShowGetUserShows = state => sTvShow(state).shows;
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case `${TV_SHOW_GET_DETAIL}_PENDING`:
+    case TV_SHOW_ADDED_IN_COLLECTION:
       return {
         ...state,
-        loading: true,
+        shows: [...state.shows, action.payload.show],
       };
-    case `${TV_SHOW_GET_DETAIL}_REJECTED`:
+    case TV_SHOW_REMOVED_FROM_COLLECTION:
       return {
         ...state,
-        loading: false,
+        shows: [
+          ...state.shows.filter(item => {
+            return item.id !== action.payload.show.id;
+          }),
+        ],
       };
-    case `${TV_SHOW_GET_DETAIL}_FULFILLED`:
+    case EPISODE_SEEN:
+      console.log(action.payload.episode.id);
+
+      console.log('before map');
+      console.log(state.shows);
+
+      let array = state.shows.map(show => {
+        if (show.id === action.payload.episode.tv_show_id) {
+          return {
+            id: show.id,
+            seen_episodes: [...show.seen_episodes, action.payload.episode.id],
+          };
+        } else {
+          return {id: show.id, seen_episodes: [...show.seen_episodes]};
+        }
+      });
+
+      console.log('after map');
+      console.log(array);
+
       return {
         ...state,
-        tv_show_get_detail: action.payload.tv_show_get_detail,
-        loading: false,
+        shows: [...array],
       };
-    case `${TV_SHOWS_GET_POPULAR}_PENDING`:
+    case EPISODE_NOT_SEEN:
+      console.log(action.payload.episode.id);
+
+      console.log('before map');
+      console.log(state.shows);
+
+      let array_not_seen = state.shows.map(show => {
+        if (show.id === action.payload.episode.tv_show_id) {
+          return {
+            id: show.id,
+            seen_episodes: [
+              ...show.seen_episodes.filter(item => {
+                return item !== action.payload.episode.id;
+              }),
+            ],
+          };
+        } else {
+          return {id: show.id, seen_episodes: [...show.seen_episodes]};
+        }
+      });
+
+      console.log('after map');
+      console.log(array_not_seen);
+
       return {
         ...state,
-        loading: true,
-      };
-    case `${TV_SHOWS_GET_POPULAR}_REJECTED`:
-      return {
-        ...state,
-        loading: false,
-      };
-    case `${TV_SHOWS_GET_POPULAR}_FULFILLED`:
-      return {
-        ...state,
-        tv_shows_get_popular: action.payload.tv_shows_get_popular,
-        loading: false,
+        shows: [...array_not_seen],
       };
     default:
       return state;
