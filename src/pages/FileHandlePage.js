@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import * as RNFS from 'react-native-fs';
 import {Text, SafeAreaView, Platform} from 'react-native';
+import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
+import {connect} from 'react-redux';
 
-export default class FileHandlePage extends Component {
+class FileHandlePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: 'si va',
       content: '',
     };
   }
@@ -24,7 +25,11 @@ export default class FileHandlePage extends Component {
   }
 
   writeFile(path) {
-    RNFS.writeFile(path, JSON.stringify(this.state), 'utf8')
+    let state = {
+      shows: this.props.collection,
+    };
+
+    RNFS.writeFile(path, JSON.stringify(state), 'utf8')
       .then(success => {
         console.log('write successful');
         this.readFile(path);
@@ -56,3 +61,22 @@ export default class FileHandlePage extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    collection: sTvShowGetUserShows(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    refreshState: function(state) {
+      // dispatch(addShowToCollection(show));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FileHandlePage);
