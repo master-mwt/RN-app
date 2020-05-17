@@ -24,6 +24,8 @@ class TvShowDetailsPage extends Component {
       in_collection: false,
       add_button_text: 'add to collection',
       remove_button_text: 'remove from collection',
+      mark_all_as_seen_button_text: 'mark all as seen',
+      mark_all_as_not_seen_button_text: 'mark all as not seen',
     };
   }
 
@@ -54,7 +56,9 @@ class TvShowDetailsPage extends Component {
           />
         )}
         {this.state.tv_show && (
-          <ScrollView style={styles.scrollview_container}>
+          <ScrollView
+            style={styles.scrollview_container}
+            showsVerticalScrollIndicator={false}>
             <View style={styles.backdrop_image_container}>
               <Image
                 style={styles.backdrop_image}
@@ -135,6 +139,44 @@ class TvShowDetailsPage extends Component {
               )}
             </View>
 
+            <View style={styles.add_button_container}>
+              {this.state.in_collection && (
+                // implement mark all as seen func
+                <TouchableOpacity
+                  style={styles.mark_all_as_seen_button}
+                  onPress={() => {}}>
+                  <Icon
+                    name="ios-checkmark-circle-outline"
+                    size={20}
+                    color="#000"
+                    style={styles.add_button_icon}
+                  />
+                  <Text style={styles.add_button_text}>
+                    {this.state.mark_all_as_seen_button_text}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={styles.add_button_container}>
+              {this.state.in_collection && (
+                // implement mark all as seen func
+                <TouchableOpacity
+                  style={styles.mark_all_as_not_seen_button}
+                  onPress={() => {}}>
+                  <Icon
+                    name="ios-close-circle-outline"
+                    size={20}
+                    color="#000"
+                    style={styles.add_button_icon}
+                  />
+                  <Text style={styles.add_button_text}>
+                    {this.state.mark_all_as_not_seen_button_text}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
             <View style={styles.box}>
               <Text style={styles.section_title}>Last Episode</Text>
             </View>
@@ -161,7 +203,6 @@ class TvShowDetailsPage extends Component {
                 <TouchableOpacity
                   style={styles.card}
                   onPress={() => {
-                    // passare l oggetto alla pagina (anche l id)
                     this.props.navigation.navigate('tv_show_season', {
                       item: {
                         tv_show_id: this.state.tv_show.id,
@@ -298,6 +339,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
   },
+  mark_all_as_seen_button: {
+    padding: 10,
+    backgroundColor: '#40c4ff',
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  mark_all_as_not_seen_button: {
+    padding: 10,
+    backgroundColor: '#aaa',
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
   add_button_text: {
     fontSize: 15,
     fontWeight: '500',
@@ -335,6 +394,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     alignItems: 'center',
+    marginBottom: 10,
   },
   episode_number: {
     padding: 10,

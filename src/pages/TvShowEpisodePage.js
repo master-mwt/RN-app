@@ -13,6 +13,7 @@ import * as API from '../api/Api';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {episodeNotSeen, episodeSeen} from '../actions';
 import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class TvShowEpisodePage extends Component {
   constructor(props) {
@@ -21,6 +22,8 @@ class TvShowEpisodePage extends Component {
       tv_show_in_collection: false,
       tv_show_watched_episode: false,
       tv_show_episode: null,
+      mark_as_seen_button_text: 'mark as seen',
+      mark_as_not_seen_button_text: 'mark as not seen',
     };
   }
 
@@ -64,7 +67,7 @@ class TvShowEpisodePage extends Component {
         )}
         {this.state.tv_show_episode && (
           <View style={styles.container}>
-            <ScrollView>
+            <ScrollView style={styles.scrollview_container}>
               <View style={styles.box}>
                 <Image
                   style={styles.backdrop_image}
@@ -75,60 +78,71 @@ class TvShowEpisodePage extends Component {
                   }}
                 />
               </View>
-              {this.state.tv_show_in_collection &&
-                !this.state.tv_show_watched_episode && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({tv_show_watched_episode: true});
-                      this.props.episodeSeen({
-                        id: this.state.tv_show_episode.id,
-                        tv_show_id: this.props.route.params.item.tv_show_id,
-                      });
-                    }}
-                    style={styles.add_button}>
-                    <Text style={styles.add_button_text}>Segna come visto</Text>
-                  </TouchableOpacity>
-                )}
-              {this.state.tv_show_in_collection &&
-                this.state.tv_show_watched_episode && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.setState({tv_show_watched_episode: false});
-                      this.props.episodeNotSeen({
-                        id: this.state.tv_show_episode.id,
-                        tv_show_id: this.props.route.params.item.tv_show_id,
-                      });
-                    }}
-                    style={styles.add_button}>
-                    <Text style={styles.add_button_text}>
-                      Segna come non visto
-                    </Text>
-                  </TouchableOpacity>
-                )}
+
               <View style={styles.box}>
                 <Text style={styles.title}>
                   {this.state.tv_show_episode.name}
                 </Text>
               </View>
+
+              <View style={styles.mark_button_container}>
+                {this.state.tv_show_in_collection &&
+                  !this.state.tv_show_watched_episode && (
+                    <TouchableOpacity
+                      style={styles.mark_button_as_seen}
+                      onPress={() => {
+                        this.setState({tv_show_watched_episode: true});
+                        this.props.episodeSeen({
+                          id: this.state.tv_show_episode.id,
+                          tv_show_id: this.props.route.params.item.tv_show_id,
+                        });
+                      }}>
+                      <Icon
+                        name="ios-checkmark-circle-outline"
+                        size={20}
+                        color="#000"
+                        style={styles.mark_button_icon}
+                      />
+                      <Text style={styles.mark_button_text}>
+                        {this.state.mark_as_seen_button_text}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                {this.state.tv_show_in_collection &&
+                  this.state.tv_show_watched_episode && (
+                    <TouchableOpacity
+                      style={styles.mark_button_as_not_seen}
+                      onPress={() => {
+                        this.setState({tv_show_watched_episode: false});
+                        this.props.episodeNotSeen({
+                          id: this.state.tv_show_episode.id,
+                          tv_show_id: this.props.route.params.item.tv_show_id,
+                        });
+                      }}>
+                      <Icon
+                        name="ios-close-circle-outline"
+                        size={20}
+                        color="#000"
+                        style={styles.mark_button_icon}
+                      />
+                      <Text style={styles.mark_button_text}>
+                        {this.state.mark_as_not_seen_button_text}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+              </View>
+
               <View style={styles.box}>
-                <Text style={styles.title}>
-                  {this.state.tv_show_episode.season_number}
-                </Text>
+                <Text>{this.state.tv_show_episode.season_number}</Text>
               </View>
               <View style={styles.box}>
-                <Text style={styles.title}>
-                  {this.state.tv_show_episode.episode_number}
-                </Text>
+                <Text>{this.state.tv_show_episode.episode_number}</Text>
               </View>
               <View style={styles.box}>
-                <Text style={styles.title}>
-                  {this.state.tv_show_episode.air_date}
-                </Text>
+                <Text>{this.state.tv_show_episode.air_date}</Text>
               </View>
               <View style={styles.box}>
-                <Text style={styles.title}>
-                  {this.state.tv_show_episode.vote_average}
-                </Text>
+                <Text>{this.state.tv_show_episode.vote_average}</Text>
               </View>
             </ScrollView>
           </View>
@@ -150,6 +164,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  scrollview_container: {
+    height: '100%',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 10,
@@ -163,13 +180,13 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   title: {
-    fontSize: 25,
-    backgroundColor: '#ddd',
+    fontSize: 22,
+    backgroundColor: '#7c4dff',
     textAlign: 'center',
     borderRadius: 5,
     padding: 5,
     overflow: 'hidden',
-    color: '#000',
+    color: '#fff',
   },
   add_button: {
     padding: 10,
@@ -180,6 +197,36 @@ const styles = StyleSheet.create({
   add_button_text: {
     textAlign: 'center',
     fontSize: 17,
+    fontWeight: '500',
+    textTransform: 'uppercase',
+  },
+  mark_button_as_not_seen: {
+    padding: 10,
+    backgroundColor: '#aaa',
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  mark_button_as_seen: {
+    padding: 10,
+    backgroundColor: '#40c4ff',
+    borderRadius: 5,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  mark_button_container: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  mark_button_icon: {
+    marginRight: 10,
+  },
+  mark_button_text: {
+    fontSize: 15,
     fontWeight: '500',
     textTransform: 'uppercase',
   },

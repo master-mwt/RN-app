@@ -116,7 +116,7 @@ export default class RootNavigator extends Component {
             options={{
               tabBarLabel: 'search',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-search" color={color} size={26} />
+                <Icon name="ios-search" color={color} size={30} />
               ),
             }}
           />
@@ -126,7 +126,7 @@ export default class RootNavigator extends Component {
             options={{
               tabBarLabel: 'explore',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-home" color={color} size={26} />
+                <Icon name="ios-eye" color={color} size={30} />
               ),
             }}
           />
@@ -136,7 +136,7 @@ export default class RootNavigator extends Component {
             options={{
               tabBarLabel: 'file',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-menu" color={color} size={26} />
+                <Icon name="ios-menu" color={color} size={30} />
               ),
             }}
           />
