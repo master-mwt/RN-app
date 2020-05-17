@@ -14,13 +14,13 @@ import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {episodeNotSeen, episodeSeen} from '../actions';
 import {connect} from 'react-redux';
 
-class EpisodePage extends Component {
+class TvShowEpisodePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tv_show_in_collection: false,
-      episode_seen: false,
-      tv_episode: null,
+      tv_show_watched_episode: false,
+      tv_show_episode: null,
     };
   }
 
@@ -39,30 +39,30 @@ class EpisodePage extends Component {
           for (let j of i.seen_episodes) {
             if (j === res.id) {
               this.setState({
-                episode_seen: true,
+                tv_show_watched_episode: true,
               });
             }
           }
         }
       }
       this.setState({
-        tv_episode: res,
+        tv_show_episode: res,
       });
-      console.log(this.state.tv_episode);
+      console.log(this.state.tv_show_episode);
     });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.main_container}>
-        {!this.state.tv_episode && (
+        {!this.state.tv_show_episode && (
           <ActivityIndicator
             style={styles.loading_icon}
             size="large"
             color="#000"
           />
         )}
-        {this.state.tv_episode && (
+        {this.state.tv_show_episode && (
           <View style={styles.container}>
             <ScrollView>
               <View style={styles.box}>
@@ -70,60 +70,64 @@ class EpisodePage extends Component {
                   style={styles.backdrop_image}
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500/${
-                      this.state.tv_episode.still_path
+                      this.state.tv_show_episode.still_path
                     }`,
                   }}
                 />
               </View>
-              {this.state.tv_show_in_collection && !this.state.episode_seen && (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({episode_seen: true});
-                    this.props.episodeSeen({
-                      id: this.state.tv_episode.id,
-                      tv_show_id: this.props.route.params.item.tv_show_id,
-                    });
-                  }}
-                  style={styles.add_button}>
-                  <Text style={styles.add_button_text}>Segna come visto</Text>
-                </TouchableOpacity>
-              )}
-              {this.state.tv_show_in_collection && this.state.episode_seen && (
-                <TouchableOpacity
-                  onPress={() => {
-                    this.setState({episode_seen: false});
-                    this.props.episodeNotSeen({
-                      id: this.state.tv_episode.id,
-                      tv_show_id: this.props.route.params.item.tv_show_id,
-                    });
-                  }}
-                  style={styles.add_button}>
-                  <Text style={styles.add_button_text}>
-                    Segna come non visto
-                  </Text>
-                </TouchableOpacity>
-              )}
-              <View style={styles.box}>
-                <Text style={styles.title}>{this.state.tv_episode.name}</Text>
-              </View>
+              {this.state.tv_show_in_collection &&
+                !this.state.tv_show_watched_episode && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({tv_show_watched_episode: true});
+                      this.props.episodeSeen({
+                        id: this.state.tv_show_episode.id,
+                        tv_show_id: this.props.route.params.item.tv_show_id,
+                      });
+                    }}
+                    style={styles.add_button}>
+                    <Text style={styles.add_button_text}>Segna come visto</Text>
+                  </TouchableOpacity>
+                )}
+              {this.state.tv_show_in_collection &&
+                this.state.tv_show_watched_episode && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.setState({tv_show_watched_episode: false});
+                      this.props.episodeNotSeen({
+                        id: this.state.tv_show_episode.id,
+                        tv_show_id: this.props.route.params.item.tv_show_id,
+                      });
+                    }}
+                    style={styles.add_button}>
+                    <Text style={styles.add_button_text}>
+                      Segna come non visto
+                    </Text>
+                  </TouchableOpacity>
+                )}
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_episode.season_number}
+                  {this.state.tv_show_episode.name}
                 </Text>
               </View>
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_episode.episode_number}
+                  {this.state.tv_show_episode.season_number}
                 </Text>
               </View>
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_episode.air_date}
+                  {this.state.tv_show_episode.episode_number}
                 </Text>
               </View>
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_episode.vote_average}
+                  {this.state.tv_show_episode.air_date}
+                </Text>
+              </View>
+              <View style={styles.box}>
+                <Text style={styles.title}>
+                  {this.state.tv_show_episode.vote_average}
                 </Text>
               </View>
             </ScrollView>
@@ -201,4 +205,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(EpisodePage);
+)(TvShowEpisodePage);

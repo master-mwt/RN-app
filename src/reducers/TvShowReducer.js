@@ -1,8 +1,8 @@
 import {
-  EPISODE_NOT_SEEN,
-  EPISODE_SEEN,
-  TV_SHOW_ADDED_IN_COLLECTION,
-  TV_SHOW_REMOVED_FROM_COLLECTION,
+  COLLECTION_NOT_WATCHED_EPISODES,
+  COLLECTION_WATCHED_EPISODES,
+  COLLECTION_ADD_TV_SHOW,
+  COLLECTION_REMOVE_TV_SHOW,
 } from '../stores/ActionType';
 
 const INITIAL_STATE = {
@@ -14,12 +14,12 @@ export const sTvShowGetUserShows = state => sTvShow(state).shows;
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case TV_SHOW_ADDED_IN_COLLECTION:
+    case COLLECTION_ADD_TV_SHOW:
       return {
         ...state,
         shows: [...state.shows, action.payload.show],
       };
-    case TV_SHOW_REMOVED_FROM_COLLECTION:
+    case COLLECTION_REMOVE_TV_SHOW:
       return {
         ...state,
         shows: [
@@ -28,7 +28,7 @@ export default function(state = INITIAL_STATE, action) {
           }),
         ],
       };
-    case EPISODE_SEEN:
+    case COLLECTION_WATCHED_EPISODES:
       console.log(action.payload.episode.id);
 
       console.log('before map');
@@ -52,7 +52,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         shows: [...array],
       };
-    case EPISODE_NOT_SEEN:
+    case COLLECTION_NOT_WATCHED_EPISODES:
       console.log(action.payload.episode.id);
 
       console.log('before map');

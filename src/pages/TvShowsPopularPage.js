@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-export default class HomeNewPage extends Component {
+export default class TvShowsPopularPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +28,7 @@ export default class HomeNewPage extends Component {
     const {page} = this.state;
     this.setState({loading: true});
 
-    API.getPopularTvShows(page)
+    API.getTvShowsPopular(page)
       .then(res => {
         this.setState({
           data: [...this.state.data, ...res.results],

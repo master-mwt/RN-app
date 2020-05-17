@@ -1,34 +1,34 @@
 import {
-  EPISODE_NOT_SEEN,
-  EPISODE_SEEN,
-  TV_SHOW_ADDED_IN_COLLECTION,
-  TV_SHOW_REMOVED_FROM_COLLECTION,
+  COLLECTION_NOT_WATCHED_EPISODES,
+  COLLECTION_WATCHED_EPISODES,
+  COLLECTION_ADD_TV_SHOW,
+  COLLECTION_REMOVE_TV_SHOW,
 } from '../stores/ActionType';
 
 export function addShowToCollection(show) {
   return {
-    type: TV_SHOW_ADDED_IN_COLLECTION,
+    type: COLLECTION_ADD_TV_SHOW,
     payload: {show: show},
   };
 }
 
 export function removeShowFromCollection(show) {
   return {
-    type: TV_SHOW_REMOVED_FROM_COLLECTION,
+    type: COLLECTION_REMOVE_TV_SHOW,
     payload: {show: show},
   };
 }
 
 export function episodeSeen(episode) {
   return {
-    type: EPISODE_SEEN,
+    type: COLLECTION_WATCHED_EPISODES,
     payload: {episode: episode},
   };
 }
 
 export function episodeNotSeen(episode) {
   return {
-    type: EPISODE_NOT_SEEN,
+    type: COLLECTION_NOT_WATCHED_EPISODES,
     payload: {episode: episode},
   };
 }

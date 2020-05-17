@@ -11,11 +11,11 @@ import {
 } from 'react-native';
 import * as API from '../api/Api';
 
-export default class SeasonPage extends Component {
+export default class TvShowSeasonPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tv_season: null,
+      tv_show_season: null,
     };
   }
 
@@ -25,23 +25,23 @@ export default class SeasonPage extends Component {
       this.props.route.params.item.season_number,
     ).then(res => {
       this.setState({
-        tv_season: res,
+        tv_show_season: res,
       });
-      console.log(this.state.tv_season);
+      console.log(this.state.tv_show_season);
     });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.main_container}>
-        {!this.state.tv_season && (
+        {!this.state.tv_show_season && (
           <ActivityIndicator
             style={styles.loading_icon}
             size="large"
             color="#000"
           />
         )}
-        {this.state.tv_season && (
+        {this.state.tv_show_season && (
           <View style={styles.container}>
             <ScrollView>
               <View style={styles.box}>
@@ -49,26 +49,26 @@ export default class SeasonPage extends Component {
                   style={styles.backdrop_image}
                   source={{
                     uri: `https://image.tmdb.org/t/p/w500/${
-                      this.state.tv_season.poster_path
+                      this.state.tv_show_season.poster_path
                     }`,
                   }}
                 />
               </View>
               <View style={styles.box}>
-                <Text style={styles.title}>{this.state.tv_season.name}</Text>
+                <Text style={styles.title}>{this.state.tv_show_season.name}</Text>
               </View>
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_season.season_number}
+                  {this.state.tv_show_season.season_number}
                 </Text>
               </View>
               <View style={styles.box}>
                 <Text style={styles.title}>
-                  {this.state.tv_season.air_date}
+                  {this.state.tv_show_season.air_date}
                 </Text>
               </View>
               <View style={styles.box}>
-                {this.state.tv_season.episodes.map((episode, key) => (
+                {this.state.tv_show_season.episodes.map((episode, key) => (
                   <TouchableOpacity
                     key={episode.id}
                     style={styles.add_button}
@@ -76,7 +76,7 @@ export default class SeasonPage extends Component {
                       this.props.navigation.navigate('tv_show_episode', {
                         item: {
                           tv_show_id: this.props.route.params.item.tv_show_id,
-                          season_number: this.state.tv_season.season_number,
+                          season_number: this.state.tv_show_season.season_number,
                           episode_number: episode.episode_number,
                         },
                       });

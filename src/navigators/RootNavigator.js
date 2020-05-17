@@ -7,12 +7,12 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import HomeNewPage from '../pages/HomeNewPage';
-import TvShowDetails from '../pages/TvShowDetails';
-import TopRatedTvShowPage from '../pages/TopRatedTvShowPage';
-import SearchPage from '../pages/SearchPage';
-import SeasonPage from '../pages/SeasonPage';
-import EpisodePage from '../pages/EpisodePage';
+import TvShowsPopularPage from '../pages/TvShowsPopularPage';
+import TvShowDetails from '../pages/TvShowDetailsPage';
+import TvShowsTopRatedPage from '../pages/TvShowsTopRatedPage';
+import TvShowsSearchPage from '../pages/TvShowsSearchPage';
+import TvShowSeasonPage from '../pages/TvShowSeasonPage';
+import TvShowEpisodePage from '../pages/TvShowEpisodePage';
 import FileHandlePage from '../pages/FileHandlePage';
 
 const StackNavigator = createStackNavigator();
@@ -26,19 +26,18 @@ export default class RootNavigator extends Component {
       <MaterialTopTabNavigator.Navigator initialRouteName="tv_shows_popular">
         <MaterialTopTabNavigator.Screen
           name="tv_shows_popular"
-          component={HomeNewPage}
+          component={TvShowsPopularPage}
           options={{
             tabBarLabel: 'popular',
           }}
         />
         <MaterialTopTabNavigator.Screen
           name="tv_shows_top_rated"
-          component={TopRatedTvShowPage}
+          component={TvShowsTopRatedPage}
           options={{
             tabBarLabel: 'top rated',
           }}
         />
-        {/* <MaterialTopTabNavigator.Screen name="home_old" component={HomePage} /> */}
       </MaterialTopTabNavigator.Navigator>
     );
 
@@ -46,7 +45,7 @@ export default class RootNavigator extends Component {
       <StackNavigator.Navigator initialRouteName="tv_shows_explore">
         <StackNavigator.Screen
           name="tv_shows_explore"
-          children={createHomeTopTab}
+          component={createHomeTopTab}
           options={{
             title: 'explore',
           }}
@@ -60,14 +59,14 @@ export default class RootNavigator extends Component {
         />
         <StackNavigator.Screen
           name="tv_show_season"
-          component={SeasonPage}
+          component={TvShowSeasonPage}
           options={{
             title: 'season',
           }}
         />
         <StackNavigator.Screen
           name="tv_show_episode"
-          component={EpisodePage}
+          component={TvShowEpisodePage}
           options={{
             title: 'episode',
           }}
@@ -79,7 +78,7 @@ export default class RootNavigator extends Component {
       <StackNavigator.Navigator initialRouteName="search">
         <StackNavigator.Screen
           name="search"
-          component={SearchPage}
+          component={TvShowsSearchPage}
           options={{
             title: 'search',
           }}
@@ -93,14 +92,14 @@ export default class RootNavigator extends Component {
         />
         <StackNavigator.Screen
           name="tv_show_season"
-          component={SeasonPage}
+          component={TvShowSeasonPage}
           options={{
             title: 'season',
           }}
         />
         <StackNavigator.Screen
           name="tv_show_episode"
-          component={EpisodePage}
+          component={TvShowEpisodePage}
           options={{
             title: 'episode',
           }}

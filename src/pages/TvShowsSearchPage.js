@@ -12,23 +12,23 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-export default class SearchPage extends Component {
+export default class TvShowsSearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       page: 1,
       loading: false,
       data: [],
-      text: '',
+      query: '',
     };
 
     this.handleChangeText = function(text) {
       this.setState({
-        text: text,
+        query: text,
       });
       if (text && text.length !== 0) {
         this.setState({loading: true});
-        API.searchTvShow(text)
+        API.doTvShowsSearch(text)
           .then(res => {
             this.setState({
               data: [...res.results],
@@ -45,9 +45,9 @@ export default class SearchPage extends Component {
 
   makeRemoteRequest = () => {
     const {page} = this.state;
-    if (this.state.text.length !== 0) {
+    if (this.state.query.length !== 0) {
       this.setState({loading: true});
-      API.searchTvShow(this.state.text, page)
+      API.doTvShowsSearch(this.state.query, page)
         .then(res => {
           this.setState({
             data: [...this.state.data, ...res.results],
@@ -81,9 +81,9 @@ export default class SearchPage extends Component {
             placeholder={'Search'}
             autoCapitalize={'none'}
             onChangeText={this.handleChangeText}
-            value={this.state.text}
+            value={this.state.query}
           />
-          {!this.state.text.length === 0 && (
+          {!this.state.query.length === 0 && (
             <View style={styles.empty_search_container}>
               <Text style={styles.empty_search}>Empty search</Text>
             </View>
@@ -93,7 +93,7 @@ export default class SearchPage extends Component {
           {this.state.loading && (
             <ActivityIndicator size="large" color="#000" />
           )}
-          {this.state.text.length !== 0 && (
+          {this.state.query.length !== 0 && (
             <FlatList
               data={this.state.data}
               style={styles.flat_list}

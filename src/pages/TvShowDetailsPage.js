@@ -16,7 +16,7 @@ import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {addShowToCollection, removeShowFromCollection} from '../actions';
 import {connect} from 'react-redux';
 
-class TvShowDetails extends Component {
+class TvShowDetailsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +28,7 @@ class TvShowDetails extends Component {
   }
 
   componentDidMount() {
-    API.getTvShowDetail(this.props.route.params.item.id).then(res => {
+    API.getTvShowDetails(this.props.route.params.item.id).then(res => {
       for (let i of this.props.collection) {
         if (i.id === res.id) {
           this.setState({
@@ -139,13 +139,17 @@ class TvShowDetails extends Component {
               <Text style={styles.section_title}>Last Episode</Text>
             </View>
             <View style={styles.episode_container}>
-              <Text style={styles.episode_number}>
-                {this.state.tv_show.last_episode_to_air.episode_number}x
-                {this.state.tv_show.last_episode_to_air.season_number}
-              </Text>
-              <Text numberOfLines={1} style={styles.episode_text}>
-                {this.state.tv_show.last_episode_to_air.name}
-              </Text>
+              <View style={{}}>
+                <Text style={styles.episode_number}>
+                  {this.state.tv_show.last_episode_to_air.episode_number}x
+                  {this.state.tv_show.last_episode_to_air.season_number}
+                </Text>
+              </View>
+              <View style={styles.episode_text_container}>
+                <Text numberOfLines={1} style={styles.episode_text}>
+                  {this.state.tv_show.last_episode_to_air.name}
+                </Text>
+              </View>
             </View>
 
             <View style={styles.box}>
@@ -161,7 +165,7 @@ class TvShowDetails extends Component {
                     this.props.navigation.navigate('tv_show_season', {
                       item: {
                         tv_show_id: this.state.tv_show.id,
-                        id: item.season_number,
+                        season_number: item.season_number,
                       },
                     });
                   }}>
@@ -180,7 +184,7 @@ class TvShowDetails extends Component {
                   </View>
                 </TouchableOpacity>
               )}
-              keyExtractor={item => item.season_number}
+              keyExtractor={item => item.season_number.toString()}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             />
@@ -340,6 +344,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#aaa',
     overflow: 'hidden',
   },
+  episode_text_container: {
+    flex: 1,
+  },
   episode_text: {
     marginLeft: 10,
     fontSize: 20,
@@ -367,4 +374,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TvShowDetails);
+)(TvShowDetailsPage);

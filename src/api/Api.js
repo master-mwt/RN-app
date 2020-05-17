@@ -3,15 +3,13 @@ import axios from 'axios';
 const API_URL = 'https://api.themoviedb.org/3/';
 const API_KEY = '609fbad41366e27a4f7a58d8d1760a3b';
 
-// const TMDB_API_URL_TV_GET_DETAILS = `https://api.themoviedb.org/3/tv/1?api_key=${API_KEY}&language=en-US`;
-
 /**
  * Function that perform a GET Axios Request
  *
  * @param link Request URL
  * @returns {Promise<T>}
  */
-function axiosGetRequest(link) {
+function doRequest(link) {
   return axios
     .get(link)
     .then(response => response.data)
@@ -26,10 +24,10 @@ function axiosGetRequest(link) {
  * @param tvShowID TvShow ID
  * @returns {Promise<* | void>}
  */
-function getTvShowDetail(tvShowID) {
+function getTvShowDetails(tvShowID) {
   let link =
     API_URL + 'tv/' + tvShowID + '?api_key=' + API_KEY + '&language=en-US';
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -38,7 +36,7 @@ function getTvShowDetail(tvShowID) {
  * @param page The requested page
  * @returns {Promise<* | void>}
  */
-function getPopularTvShows(page = 1) {
+function getTvShowsPopular(page = 1) {
   let link =
     API_URL +
     'tv/popular' +
@@ -47,7 +45,7 @@ function getPopularTvShows(page = 1) {
     '&language=en-US' +
     '&page=' +
     page;
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -56,7 +54,7 @@ function getPopularTvShows(page = 1) {
  * @param page The requested page
  * @returns {Promise<* | void>}
  */
-function getTopRatedTvShows(page = 1) {
+function getTvShowsTopRated(page = 1) {
   let link =
     API_URL +
     'tv/top_rated' +
@@ -65,7 +63,7 @@ function getTopRatedTvShows(page = 1) {
     '&language=en-US' +
     '&page=' +
     page;
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -75,7 +73,7 @@ function getTopRatedTvShows(page = 1) {
  * @param page The requested page
  * @returns {Promise<* | void>}
  */
-function getSimilarTvShows(tvShowID, page = 1) {
+function getTvShowSimilars(tvShowID, page = 1) {
   let link =
     API_URL +
     'tv/' +
@@ -86,7 +84,7 @@ function getSimilarTvShows(tvShowID, page = 1) {
     '&language=en-US' +
     '&page=' +
     page;
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -106,7 +104,7 @@ function getTvShowSeason(tvShowID, seasonNumber) {
     '?api_key=' +
     API_KEY +
     '&language=en-US';
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -129,7 +127,7 @@ function getTvShowEpisode(tvShowID, seasonNumber, episodeNumber) {
     '?api_key=' +
     API_KEY +
     '&language=en-US';
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -147,7 +145,7 @@ function getTvShowCredits(tvShowID) {
     '?api_key=' +
     API_KEY +
     '&language=en-US';
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 /**
@@ -157,7 +155,7 @@ function getTvShowCredits(tvShowID) {
  * @param query The query string
  * @param page The requested page
  */
-function searchTvShow(query, page = 1) {
+function doTvShowsSearch(query, page = 1) {
   let link =
     API_URL +
     'search/tv' +
@@ -168,16 +166,16 @@ function searchTvShow(query, page = 1) {
     '&page=' +
     page +
     '&language=en-US';
-  return axiosGetRequest(link);
+  return doRequest(link);
 }
 
 export {
-  getTvShowDetail,
-  getPopularTvShows,
-  getTopRatedTvShows,
-  getSimilarTvShows,
+  getTvShowDetails,
+  getTvShowsPopular,
+  getTvShowsTopRated,
+  getTvShowSimilars,
   getTvShowSeason,
   getTvShowEpisode,
   getTvShowCredits,
-  searchTvShow,
+  doTvShowsSearch,
 };
