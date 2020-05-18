@@ -109,13 +109,15 @@ export default class RootNavigator extends Component {
       </StackNavigator.Navigator>
     );
 
-    const createCollectionStack = () => (
-      <StackNavigator.Navigator initialRouteName="collection">
+    const createCollectionMain = () => (
+      <StackNavigator.Navigator
+        initialRouteName="collection_main"
+        screenOptions={{headerShown: false}}>
         <StackNavigator.Screen
-          name="collection"
+          name="collection_main"
           component={createCollectionDrawer}
           options={{
-            title: 'collection',
+            title: 'collection_main',
           }}
         />
       </StackNavigator.Navigator>
@@ -125,10 +127,40 @@ export default class RootNavigator extends Component {
       <DrawerNavigator.Navigator>
         <DrawerNavigator.Screen
           name="collection"
-          component={TvShowsCollectionPage}
+          component={createCollectionStack}
         />
         <DrawerNavigator.Screen name="file" component={FileHandlePage} />
       </DrawerNavigator.Navigator>
+    );
+
+    const createCollectionStack = () => (
+      <StackNavigator.Navigator initialRouteName="collection">
+        <StackNavigator.Screen
+          name="collection"
+          component={TvShowsCollectionPage}
+        />
+        <StackNavigator.Screen
+          name="tv_show_details"
+          component={TvShowDetails}
+          options={{
+            title: 'details',
+          }}
+        />
+        <StackNavigator.Screen
+          name="tv_show_season"
+          component={TvShowSeasonPage}
+          options={{
+            title: 'season',
+          }}
+        />
+        <StackNavigator.Screen
+          name="tv_show_episode"
+          component={TvShowEpisodePage}
+          options={{
+            title: 'episode',
+          }}
+        />
+      </StackNavigator.Navigator>
     );
 
     return (
@@ -156,7 +188,7 @@ export default class RootNavigator extends Component {
           />
           <BottomTabNavigator.Screen
             name="collection"
-            component={createCollectionStack}
+            component={createCollectionMain}
             options={{
               tabBarLabel: 'collection',
               tabBarIcon: ({color}) => (
