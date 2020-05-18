@@ -178,59 +178,65 @@ class TvShowDetailsPage extends Component {
                 </TouchableOpacity>
               )}
             </View>
-
-            <View style={styles.box}>
-              <Text style={styles.section_title}>Last Episode</Text>
-            </View>
-            <View style={styles.episode_container}>
-              <View style={{}}>
-                <Text style={styles.episode_number}>
-                  {this.state.tv_show.last_episode_to_air.episode_number}x
-                  {this.state.tv_show.last_episode_to_air.season_number}
-                </Text>
-              </View>
-              <View style={styles.episode_text_container}>
-                <Text numberOfLines={1} style={styles.episode_text}>
-                  {this.state.tv_show.last_episode_to_air.name}
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.box}>
-              <Text style={styles.section_title}>Seasons</Text>
-            </View>
-            <FlatList
-              data={this.state.tv_show.seasons}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={styles.card}
-                  onPress={() => {
-                    this.props.navigation.navigate('tv_show_season', {
-                      item: {
-                        tv_show_id: this.state.tv_show.id,
-                        season_number: item.season_number,
-                      },
-                    });
-                  }}>
-                  <Image
-                    style={styles.card_image}
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/w500/${
-                        item.poster_path
-                      }`,
-                    }}
-                  />
-                  <View style={styles.card_text_container}>
-                    <Text numberOfLines={1} style={styles.card_text}>
-                      {item.name}
+            {this.state.tv_show.last_episode_to_air && (
+              <View>
+                <View style={styles.box}>
+                  <Text style={styles.section_title}>Last Episode</Text>
+                </View>
+                <View style={styles.episode_container}>
+                  <View>
+                    <Text style={styles.episode_number}>
+                      {this.state.tv_show.last_episode_to_air.episode_number}x
+                      {this.state.tv_show.last_episode_to_air.season_number}
                     </Text>
                   </View>
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item.season_number.toString()}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
+                  <View style={styles.episode_text_container}>
+                    <Text numberOfLines={1} style={styles.episode_text}>
+                      {this.state.tv_show.last_episode_to_air.name}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            )}
+            {this.state.tv_show.seasons.length !== 0 && (
+              <View>
+                <View style={styles.box}>
+                  <Text style={styles.section_title}>Seasons</Text>
+                </View>
+                <FlatList
+                  data={this.state.tv_show.seasons}
+                  renderItem={({item}) => (
+                    <TouchableOpacity
+                      style={styles.card}
+                      onPress={() => {
+                        this.props.navigation.navigate('tv_show_season', {
+                          item: {
+                            tv_show_id: this.state.tv_show.id,
+                            season_number: item.season_number,
+                          },
+                        });
+                      }}>
+                      <Image
+                        style={styles.card_image}
+                        source={{
+                          uri: `https://image.tmdb.org/t/p/w500/${
+                            item.poster_path
+                          }`,
+                        }}
+                      />
+                      <View style={styles.card_text_container}>
+                        <Text numberOfLines={1} style={styles.card_text}>
+                          {item.name}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  keyExtractor={item => item.season_number.toString()}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </View>
+            )}
           </ScrollView>
         )}
       </SafeAreaView>

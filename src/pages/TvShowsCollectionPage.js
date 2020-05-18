@@ -17,6 +17,9 @@ class TvShowsCollectionPage extends Component {
   }
 
   render() {
+    this.props.collection.sort(function(a, b) {
+      return a.name.localeCompare(b.name);
+    });
     return (
       <SafeAreaView style={styles.container}>
         {!this.props.collection ||

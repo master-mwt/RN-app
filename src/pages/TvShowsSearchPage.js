@@ -83,11 +83,6 @@ export default class TvShowsSearchPage extends Component {
             onChangeText={this.handleChangeText}
             value={this.state.query}
           />
-          {!this.state.query.length === 0 && (
-            <View style={styles.empty_search_container}>
-              <Text style={styles.empty_search}>Empty search</Text>
-            </View>
-          )}
         </View>
         <View>
           {this.state.loading && (
