@@ -3,6 +3,7 @@ import {
   COLLECTION_WATCHED_EPISODES,
   COLLECTION_ADD_TV_SHOW,
   COLLECTION_REMOVE_TV_SHOW,
+  COLLECTION_REFRESH,
 } from '../stores/ActionType';
 
 const INITIAL_STATE = {
@@ -38,10 +39,17 @@ export default function(state = INITIAL_STATE, action) {
         if (show.id === action.payload.episode.tv_show_id) {
           return {
             id: show.id,
+            name: show.name,
+            poster_path: show.poster_path,
             seen_episodes: [...show.seen_episodes, action.payload.episode.id],
           };
         } else {
-          return {id: show.id, seen_episodes: [...show.seen_episodes]};
+          return {
+            id: show.id,
+            name: show.name,
+            poster_path: show.poster_path,
+            seen_episodes: [...show.seen_episodes],
+          };
         }
       });
 
@@ -62,6 +70,8 @@ export default function(state = INITIAL_STATE, action) {
         if (show.id === action.payload.episode.tv_show_id) {
           return {
             id: show.id,
+            name: show.name,
+            poster_path: show.poster_path,
             seen_episodes: [
               ...show.seen_episodes.filter(item => {
                 return item !== action.payload.episode.id;
@@ -69,7 +79,12 @@ export default function(state = INITIAL_STATE, action) {
             ],
           };
         } else {
-          return {id: show.id, seen_episodes: [...show.seen_episodes]};
+          return {
+            id: show.id,
+            name: show.name,
+            poster_path: show.poster_path,
+            seen_episodes: [...show.seen_episodes],
+          };
         }
       });
 
@@ -79,6 +94,14 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         shows: [...array_not_seen],
+      };
+    case COLLECTION_REFRESH:
+      console.log('refresh collection in reducer: ');
+      console.log([...action.payload.shows]);
+
+      return {
+        ...state,
+        shows: [...action.payload.shows],
       };
     default:
       return state;

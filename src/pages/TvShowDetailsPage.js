@@ -102,6 +102,8 @@ class TvShowDetailsPage extends Component {
                     this.setState({in_collection: true});
                     this.props.addShowToCollection({
                       id: this.state.tv_show.id,
+                      poster_path: this.state.tv_show.poster_path,
+                      name: this.state.tv_show.name,
                       seen_episodes: [],
                     });
                   }}

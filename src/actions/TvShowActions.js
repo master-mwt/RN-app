@@ -3,6 +3,7 @@ import {
   COLLECTION_WATCHED_EPISODES,
   COLLECTION_ADD_TV_SHOW,
   COLLECTION_REMOVE_TV_SHOW,
+  COLLECTION_REFRESH,
 } from '../stores/ActionType';
 
 export function addShowToCollection(show) {
@@ -30,5 +31,12 @@ export function episodeNotSeen(episode) {
   return {
     type: COLLECTION_NOT_WATCHED_EPISODES,
     payload: {episode: episode},
+  };
+}
+
+export function refreshCollection(shows) {
+  return {
+    type: COLLECTION_REFRESH,
+    payload: {shows: shows},
   };
 }

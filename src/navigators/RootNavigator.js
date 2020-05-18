@@ -14,6 +14,7 @@ import TvShowsSearchPage from '../pages/TvShowsSearchPage';
 import TvShowSeasonPage from '../pages/TvShowSeasonPage';
 import TvShowEpisodePage from '../pages/TvShowEpisodePage';
 import FileHandlePage from '../pages/FileHandlePage';
+import TvShowsCollectionPage from '../pages/TvShowsCollectionPage';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
@@ -36,6 +37,13 @@ export default class RootNavigator extends Component {
           component={TvShowsTopRatedPage}
           options={{
             tabBarLabel: 'top rated',
+          }}
+        />
+        <MaterialTopTabNavigator.Screen
+          name="tv_shows_collection"
+          component={TvShowsCollectionPage}
+          options={{
+            tabBarLabel: 'my shows',
           }}
         />
       </MaterialTopTabNavigator.Navigator>
