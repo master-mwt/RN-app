@@ -11,13 +11,18 @@ import {
 } from 'react-native';
 import * as API from '../api/Api';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
+import {episodeNotSeen, episodeSeen} from '../actions';
+import {connect} from 'react-redux';
 
-export default class TvShowSeasonPage extends Component {
+class TvShowSeasonPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tv_show_season: null,
-      tv_show_is_watched: false,
+      in_collection: false,
+      total_number_of_episodes: 0,
+      number_of_seen_episodes: 0,
       mark_all_as_seen_button_text: 'mark all episodes as seen',
       mark_all_as_not_seen_button_text: 'mark all episodes as not seen',
     };
@@ -31,7 +36,63 @@ export default class TvShowSeasonPage extends Component {
       this.setState({
         tv_show_season: res,
       });
+      for (let i of this.props.collection) {
+        if (i.id === this.props.route.params.item.tv_show_id) {
+          this.setState({
+            in_collection: true,
+            number_of_seen_episodes: i.seen_episodes.length,
+            total_number_of_episodes: res.episodes.length,
+          });
+        }
+      }
       console.log(this.state.tv_show_season);
+    });
+  }
+
+  episodeIsWatched(episodeId) {
+    for (let i of this.props.collection) {
+      for (let j of i.seen_episodes) {
+        if (j === episodeId) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  markAllAsSeen() {
+    for (let i of this.props.collection) {
+      if (i.id === this.props.route.params.item.tv_show_id) {
+        this.state.tv_show_season.episodes.map((episode, key) => {
+          if (!i.seen_episodes.includes(episode.id)) {
+            this.props.episodeSeen({
+              id: episode.id,
+              tv_show_id: this.props.route.params.item.tv_show_id,
+            });
+          }
+        });
+      }
+    }
+    this.setState({
+      number_of_seen_episodes: this.state.total_number_of_episodes,
+    });
+  }
+
+  markAllAsNotSeen() {
+    for (let i of this.props.collection) {
+      if (i.id === this.props.route.params.item.tv_show_id) {
+        this.state.tv_show_season.episodes.map((episode, key) => {
+          if (i.seen_episodes.includes(episode.id)) {
+            this.props.episodeNotSeen({
+              id: episode.id,
+              tv_show_id: this.props.route.params.item.tv_show_id,
+            });
+          }
+        });
+      }
+    }
+    this.setState({
+      number_of_seen_episodes: 0,
     });
   }
 
@@ -67,41 +128,48 @@ export default class TvShowSeasonPage extends Component {
               </View>
 
               <View style={styles.mark_all_button_container}>
-                {!this.state.in_collection && (
-                  // implement mark all as seen func
-                  <TouchableOpacity
-                    style={styles.mark_all_as_seen_button}
-                    onPress={() => {}}>
-                    <Icon
-                      name="ios-checkmark-circle-outline"
-                      size={20}
-                      color="#000"
-                      style={styles.mark_all_button_icon}
-                    />
-                    <Text style={styles.mark_all_button_text}>
-                      {this.state.mark_all_as_seen_button_text}
-                    </Text>
-                  </TouchableOpacity>
-                )}
+                {this.state.in_collection &&
+                  this.state.total_number_of_episodes !==
+                    this.state.number_of_seen_episodes && (
+                    // implement mark all as seen func
+                    <TouchableOpacity
+                      style={styles.mark_all_as_seen_button}
+                      onPress={() => {
+                        this.markAllAsSeen();
+                      }}>
+                      <Icon
+                        name="ios-checkmark-circle-outline"
+                        size={20}
+                        color="#000"
+                        style={styles.mark_all_button_icon}
+                      />
+                      <Text style={styles.mark_all_button_text}>
+                        {this.state.mark_all_as_seen_button_text}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
               </View>
 
               <View style={styles.mark_all_button_container}>
-                {!this.state.in_collection && (
-                  // implement mark all as seen func
-                  <TouchableOpacity
-                    style={styles.mark_all_as_not_seen_button}
-                    onPress={() => {}}>
-                    <Icon
-                      name="ios-close-circle-outline"
-                      size={20}
-                      color="#000"
-                      style={styles.mark_all_button_icon}
-                    />
-                    <Text style={styles.mark_all_button_text}>
-                      {this.state.mark_all_as_not_seen_button_text}
-                    </Text>
-                  </TouchableOpacity>
-                )}
+                {this.state.in_collection &&
+                  this.state.number_of_seen_episodes !== 0 && (
+                    // implement mark all as seen func
+                    <TouchableOpacity
+                      style={styles.mark_all_as_not_seen_button}
+                      onPress={() => {
+                        this.markAllAsNotSeen();
+                      }}>
+                      <Icon
+                        name="ios-close-circle-outline"
+                        size={20}
+                        color="#000"
+                        style={styles.mark_all_button_icon}
+                      />
+                      <Text style={styles.mark_all_button_text}>
+                        {this.state.mark_all_as_not_seen_button_text}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
               </View>
 
               <View style={styles.box}>
@@ -132,20 +200,42 @@ export default class TvShowSeasonPage extends Component {
                       </View>
                     </View>
                     <View style={styles.mark_button_container}>
-                      {this.state.tv_show_is_watched && (
-                        <TouchableOpacity
-                          style={styles.mark_button_watched}
-                          onPress={() => {}}>
-                          <Icon name="ios-checkmark" size={35} color="#000" />
-                        </TouchableOpacity>
-                      )}
-                      {!this.state.tv_show_is_watched && (
-                        <TouchableOpacity
-                          style={styles.mark_button_not_watched}
-                          onPress={() => {}}>
-                          <Icon name="ios-checkmark" size={35} color="#000" />
-                        </TouchableOpacity>
-                      )}
+                      {this.state.in_collection &&
+                        this.episodeIsWatched(episode.id) && (
+                          <TouchableOpacity
+                            style={styles.mark_button_watched}
+                            onPress={() => {
+                              this.props.episodeNotSeen({
+                                id: episode.id,
+                                tv_show_id: this.props.route.params.item
+                                  .tv_show_id,
+                              });
+                              this.setState({
+                                number_of_seen_episodes:
+                                  this.state.number_of_seen_episodes - 1,
+                              });
+                            }}>
+                            <Icon name="ios-checkmark" size={35} color="#000" />
+                          </TouchableOpacity>
+                        )}
+                      {this.state.in_collection &&
+                        !this.episodeIsWatched(episode.id) && (
+                          <TouchableOpacity
+                            style={styles.mark_button_not_watched}
+                            onPress={() => {
+                              this.props.episodeSeen({
+                                id: episode.id,
+                                tv_show_id: this.props.route.params.item
+                                  .tv_show_id,
+                              });
+                              this.setState({
+                                number_of_seen_episodes:
+                                  this.state.number_of_seen_episodes + 1,
+                              });
+                            }}>
+                            <Icon name="ios-checkmark" size={35} color="#000" />
+                          </TouchableOpacity>
+                        )}
                     </View>
                   </TouchableOpacity>
                 ))}
@@ -271,3 +361,25 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 });
+
+function mapStateToProps(state) {
+  return {
+    collection: sTvShowGetUserShows(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    episodeSeen: function(episode) {
+      dispatch(episodeSeen(episode));
+    },
+    episodeNotSeen: function(episode) {
+      dispatch(episodeNotSeen(episode));
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TvShowSeasonPage);
