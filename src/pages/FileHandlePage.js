@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import * as RNFS from 'react-native-fs';
-import {Text, View, SafeAreaView, Platform, Button} from 'react-native';
+import {
+  Text,
+  View,
+  SafeAreaView,
+  Platform,
+  Button,
+  StatusBar,
+} from 'react-native';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
 import {refreshCollection} from '../actions';
@@ -74,6 +81,7 @@ class FileHandlePage extends Component {
           alignItems: 'center',
           flexDirection: 'column',
         }}>
+        <StatusBar barStyle="light-content" backgroundColor="#d02860" />
         <Text>{this.state.content}</Text>
         <View style={{marginVertical: 10}}>
           <Button

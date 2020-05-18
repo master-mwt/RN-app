@@ -3,7 +3,7 @@ import * as API from '../api/Api';
 import {
   FlatList,
   Image,
-  SafeAreaView,
+  SafeAreaView, StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -55,6 +55,7 @@ export default class TvShowsTopRatedPage extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#694fad" />
         <FlatList
           data={this.state.data}
           style={styles.flat_list}

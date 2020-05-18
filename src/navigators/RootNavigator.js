@@ -3,8 +3,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-//import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+//import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import TvShowsPopularPage from '../pages/TvShowsPopularPage';
@@ -18,14 +18,21 @@ import TvShowsCollectionPage from '../pages/TvShowsCollectionPage';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
-const BottomTabNavigator = createBottomTabNavigator();
+//const BottomTabNavigator = createBottomTabNavigator();
 const DrawerNavigator = createDrawerNavigator();
-//const MaterialBottomTabNavigator = createMaterialBottomTabNavigator();
+const MaterialBottomTabNavigator = createMaterialBottomTabNavigator();
 
 export default class RootNavigator extends Component {
   render() {
     const createHomeTopTab = () => (
-      <MaterialTopTabNavigator.Navigator initialRouteName="tv_shows_popular">
+      <MaterialTopTabNavigator.Navigator
+        initialRouteName="tv_shows_popular"
+        tabBarOptions={{
+          activeTintColor: '#694fad',
+          indicatorStyle: {
+            backgroundColor: '#694fad',
+          },
+        }}>
         <MaterialTopTabNavigator.Screen
           name="tv_shows_popular"
           component={TvShowsPopularPage}
@@ -43,8 +50,18 @@ export default class RootNavigator extends Component {
       </MaterialTopTabNavigator.Navigator>
     );
 
-    const createHomeStack = () => (
-      <StackNavigator.Navigator initialRouteName="tv_shows_explore">
+    const createExploreStack = () => (
+      <StackNavigator.Navigator
+        initialRouteName="tv_shows_explore"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#694fad',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}>
         <StackNavigator.Screen
           name="tv_shows_explore"
           component={createHomeTopTab}
@@ -77,7 +94,17 @@ export default class RootNavigator extends Component {
     );
 
     const createSearchStack = () => (
-      <StackNavigator.Navigator initialRouteName="search">
+      <StackNavigator.Navigator
+        initialRouteName="search"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#1f65ff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}>
         <StackNavigator.Screen
           name="search"
           component={TvShowsSearchPage}
@@ -109,32 +136,18 @@ export default class RootNavigator extends Component {
       </StackNavigator.Navigator>
     );
 
-    const createCollectionMain = () => (
-      <StackNavigator.Navigator
-        initialRouteName="collection_main"
-        screenOptions={{headerShown: false}}>
-        <StackNavigator.Screen
-          name="collection_main"
-          component={createCollectionDrawer}
-          options={{
-            title: 'collection_main',
-          }}
-        />
-      </StackNavigator.Navigator>
-    );
-
-    const createCollectionDrawer = () => (
-      <DrawerNavigator.Navigator>
-        <DrawerNavigator.Screen
-          name="collection"
-          component={createCollectionStack}
-        />
-        <DrawerNavigator.Screen name="file" component={FileHandlePage} />
-      </DrawerNavigator.Navigator>
-    );
-
     const createCollectionStack = () => (
-      <StackNavigator.Navigator initialRouteName="collection">
+      <StackNavigator.Navigator
+        initialRouteName="collection"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#009387',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}>
         <StackNavigator.Screen
           name="collection"
           component={TvShowsCollectionPage}
@@ -163,40 +176,72 @@ export default class RootNavigator extends Component {
       </StackNavigator.Navigator>
     );
 
+    const createSettingsStack = () => (
+      <StackNavigator.Navigator
+        initialRouteName="settings"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#d02860',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: '#fff',
+          },
+        }}>
+        <StackNavigator.Screen name="settings" component={FileHandlePage} />
+      </StackNavigator.Navigator>
+    );
+
     return (
       <NavigationContainer>
-        <BottomTabNavigator.Navigator initialRouteName="explore">
-          <BottomTabNavigator.Screen
+        <MaterialBottomTabNavigator.Navigator
+          initialRouteName="explore"
+          shifting={true}>
+          <MaterialBottomTabNavigator.Screen
             name="search"
             component={createSearchStack}
             options={{
               tabBarLabel: 'search',
+              tabBarColor: '#1f65ff',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-search" color={color} size={30} />
+                <Icon name="ios-search" color={color} size={25} />
               ),
             }}
           />
-          <BottomTabNavigator.Screen
+          <MaterialBottomTabNavigator.Screen
             name="explore"
-            component={createHomeStack}
+            component={createExploreStack}
             options={{
               tabBarLabel: 'explore',
+              tabBarColor: '#694fad',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-eye" color={color} size={30} />
+                <Icon name="ios-eye" color={color} size={25} />
               ),
             }}
           />
-          <BottomTabNavigator.Screen
+          <MaterialBottomTabNavigator.Screen
             name="collection"
-            component={createCollectionMain}
+            component={createCollectionStack}
             options={{
               tabBarLabel: 'collection',
+              tabBarColor: '#009387',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-person" color={color} size={30} />
+                <Icon name="ios-person" color={color} size={25} />
               ),
             }}
           />
-        </BottomTabNavigator.Navigator>
+          <MaterialBottomTabNavigator.Screen
+            name="settings"
+            component={createSettingsStack}
+            options={{
+              tabBarLabel: 'settings',
+              tabBarColor: '#d02860',
+              tabBarIcon: ({color}) => (
+                <Icon name="ios-settings" color={color} size={25} />
+              ),
+            }}
+          />
+        </MaterialBottomTabNavigator.Navigator>
       </NavigationContainer>
     );
   }

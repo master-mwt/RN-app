@@ -4,6 +4,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -55,6 +56,7 @@ export default class TvShowsPopularPage extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#694fad" />
         <FlatList
           data={this.state.data}
           style={styles.flat_list}

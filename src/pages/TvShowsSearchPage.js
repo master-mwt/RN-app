@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 
 export default class TvShowsSearchPage extends Component {
@@ -75,6 +76,7 @@ export default class TvShowsSearchPage extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#1f65ff" />
         <View style={styles.text_input_container}>
           <TextInput
             style={styles.text_input}

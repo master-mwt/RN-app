@@ -127,11 +127,10 @@ class TvShowSeasonPage extends Component {
                 </Text>
               </View>
 
-              <View style={styles.mark_all_button_container}>
-                {this.state.in_collection &&
-                  this.state.total_number_of_episodes !==
-                    this.state.number_of_seen_episodes && (
-                    // implement mark all as seen func
+              {this.state.in_collection &&
+                this.state.total_number_of_episodes !==
+                  this.state.number_of_seen_episodes && (
+                  <View style={styles.mark_all_button_container}>
                     <TouchableOpacity
                       style={styles.mark_all_as_seen_button}
                       onPress={() => {
@@ -147,13 +146,13 @@ class TvShowSeasonPage extends Component {
                         {this.state.mark_all_as_seen_button_text}
                       </Text>
                     </TouchableOpacity>
-                  )}
-              </View>
+                  </View>
+                )}
 
-              <View style={styles.mark_all_button_container}>
-                {this.state.in_collection &&
-                  this.state.number_of_seen_episodes !== 0 && (
-                    // implement mark all as seen func
+              {this.state.in_collection &&
+                this.state.number_of_seen_episodes ===
+                  this.state.total_number_of_episodes && (
+                  <View style={styles.mark_all_button_container}>
                     <TouchableOpacity
                       style={styles.mark_all_as_not_seen_button}
                       onPress={() => {
@@ -169,8 +168,8 @@ class TvShowSeasonPage extends Component {
                         {this.state.mark_all_as_not_seen_button_text}
                       </Text>
                     </TouchableOpacity>
-                  )}
-              </View>
+                  </View>
+                )}
 
               <View style={styles.box}>
                 {this.state.tv_show_season.episodes.map((episode, key) => (

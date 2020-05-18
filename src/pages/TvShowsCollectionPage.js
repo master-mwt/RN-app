@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
@@ -22,6 +23,7 @@ class TvShowsCollectionPage extends Component {
     });
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#009387" />
         {!this.props.collection ||
           (this.props.collection.length === 0 && (
             <View style={styles.empty_collection_text_container}>
