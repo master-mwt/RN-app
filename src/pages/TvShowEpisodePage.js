@@ -85,6 +85,25 @@ class TvShowEpisodePage extends Component {
                 </Text>
               </View>
 
+              <View style={styles.meta_container}>
+                <View style={styles.meta_container_col}>
+                  <View style={styles.meta_col}>
+                    <Text style={styles.meta_number}>
+                      {this.state.tv_show_episode.season_number}
+                    </Text>
+                    <Text style={styles.meta_label}>Season</Text>
+                  </View>
+                </View>
+                <View style={styles.meta_container_col}>
+                  <View style={styles.meta_col}>
+                    <Text style={styles.meta_number}>
+                      {this.state.tv_show_episode.episode_number}
+                    </Text>
+                    <Text style={styles.meta_label}>Episode</Text>
+                  </View>
+                </View>
+              </View>
+
               <View style={styles.mark_button_container}>
                 {this.state.tv_show_in_collection &&
                   !this.state.tv_show_watched_episode && (
@@ -133,16 +152,25 @@ class TvShowEpisodePage extends Component {
               </View>
 
               <View style={styles.box}>
-                <Text>{this.state.tv_show_episode.season_number}</Text>
+                <Text style={styles.overview}>
+                  {this.state.tv_show_episode.overview}
+                </Text>
               </View>
-              <View style={styles.box}>
-                <Text>{this.state.tv_show_episode.episode_number}</Text>
-              </View>
-              <View style={styles.box}>
-                <Text>{this.state.tv_show_episode.air_date}</Text>
-              </View>
-              <View style={styles.box}>
-                <Text>{this.state.tv_show_episode.vote_average}</Text>
+
+              <View style={styles.social_container}>
+                <View style={styles.social_container_col}>
+                  <Icon name="ios-star-outline" color="#000" size={35} />
+                  <Text style={styles.social_text}>
+                    {Math.round(this.state.tv_show_episode.vote_average, 1) +
+                      ' %'}
+                  </Text>
+                </View>
+                <View style={styles.social_container_col}>
+                  <Icon name="ios-eye" color="#000" size={35} />
+                  <Text style={styles.social_text}>
+                    {this.state.tv_show_episode.vote_count}
+                  </Text>
+                </View>
               </View>
             </ScrollView>
           </View>
@@ -229,6 +257,73 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     textTransform: 'uppercase',
+  },
+  social_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  social_container_col: {
+    flexDirection: 'column', // maybe useful
+    alignItems: 'center',
+    paddingVertical: 5,
+  },
+  social_col: {
+    backgroundColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+  },
+  meta_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  meta_container_col: {
+    flex: 1,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  meta_col: {
+    width: '100%',
+    borderRadius: 5,
+    padding: 5,
+    backgroundColor: '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  meta_number: {
+    fontSize: 25,
+    //backgroundColor: '#000',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    //borderRadius: 5,
+    //padding: 15,
+    //overflow: 'hidden',
+    color: '#000',
+  },
+  meta_label: {
+    color: '#000',
+  },
+  social_text: {
+    fontSize: 18,
+    backgroundColor: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    //borderRadius: 5,
+    padding: 5,
+    //overflow: 'hidden',
+    color: '#000',
+  },
+  overview: {
+    fontSize: 15,
+    backgroundColor: '#fff',
+    textAlign: 'left',
+    //borderRadius: 5,
+    paddingVertical: 5,
+    overflow: 'hidden',
+    color: '#000',
   },
 });
 

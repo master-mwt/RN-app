@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // maybe useless
     flexWrap: 'wrap', // maybe useless
     backgroundColor: '#fff',
+    paddingVertical: 10,
   },
   loading_icon: {
     flex: 1,
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   }, */
   backdrop_image_container: {
-    padding: 10,
+    paddingHorizontal: 10,
   },
   backdrop_image: {
     width: '100%',
