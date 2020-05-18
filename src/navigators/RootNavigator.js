@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-//import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 //import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -19,6 +19,7 @@ import TvShowsCollectionPage from '../pages/TvShowsCollectionPage';
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
 const BottomTabNavigator = createBottomTabNavigator();
+const DrawerNavigator = createDrawerNavigator();
 //const MaterialBottomTabNavigator = createMaterialBottomTabNavigator();
 
 export default class RootNavigator extends Component {
@@ -37,13 +38,6 @@ export default class RootNavigator extends Component {
           component={TvShowsTopRatedPage}
           options={{
             tabBarLabel: 'top rated',
-          }}
-        />
-        <MaterialTopTabNavigator.Screen
-          name="tv_shows_collection"
-          component={TvShowsCollectionPage}
-          options={{
-            tabBarLabel: 'my shows',
           }}
         />
       </MaterialTopTabNavigator.Navigator>
@@ -115,6 +109,28 @@ export default class RootNavigator extends Component {
       </StackNavigator.Navigator>
     );
 
+    const createCollectionStack = () => (
+      <StackNavigator.Navigator initialRouteName="collection">
+        <StackNavigator.Screen
+          name="collection"
+          component={createCollectionDrawer}
+          options={{
+            title: 'collection',
+          }}
+        />
+      </StackNavigator.Navigator>
+    );
+
+    const createCollectionDrawer = () => (
+      <DrawerNavigator.Navigator>
+        <DrawerNavigator.Screen
+          name="collection"
+          component={TvShowsCollectionPage}
+        />
+        <DrawerNavigator.Screen name="file" component={FileHandlePage} />
+      </DrawerNavigator.Navigator>
+    );
+
     return (
       <NavigationContainer>
         <BottomTabNavigator.Navigator initialRouteName="explore">
@@ -139,12 +155,12 @@ export default class RootNavigator extends Component {
             }}
           />
           <BottomTabNavigator.Screen
-            name="file"
-            component={FileHandlePage}
+            name="collection"
+            component={createCollectionStack}
             options={{
-              tabBarLabel: 'file',
+              tabBarLabel: 'collection',
               tabBarIcon: ({color}) => (
-                <Icon name="ios-menu" color={color} size={30} />
+                <Icon name="ios-person" color={color} size={30} />
               ),
             }}
           />
