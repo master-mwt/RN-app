@@ -12,7 +12,7 @@ import {
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
 
-class TvShowsCollectionPage extends Component {
+class UserCollectionPage extends Component {
   constructor(props) {
     super(props);
   }
@@ -130,4 +130,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null,
-)(TvShowsCollectionPage);
+)(UserCollectionPage);

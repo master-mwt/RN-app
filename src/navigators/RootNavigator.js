@@ -13,8 +13,8 @@ import TvShowsTopRatedPage from '../pages/TvShowsTopRatedPage';
 import TvShowsSearchPage from '../pages/TvShowsSearchPage';
 import TvShowSeasonPage from '../pages/TvShowSeasonPage';
 import TvShowEpisodePage from '../pages/TvShowEpisodePage';
-import FileHandlePage from '../pages/FileHandlePage';
-import TvShowsCollectionPage from '../pages/TvShowsCollectionPage';
+import FileHandlePage from '../pages/UserSettingsPage';
+import TvShowsCollectionPage from '../pages/UserCollectionPage';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();

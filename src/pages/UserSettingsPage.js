@@ -12,7 +12,7 @@ import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
 import {refreshCollection} from '../actions';
 
-class FileHandlePage extends Component {
+class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +23,8 @@ class FileHandlePage extends Component {
   componentDidMount() {
     this.path =
       Platform.OS === 'ios'
-        ? RNFS.DocumentDirectoryPath + '/file.json'
-        : RNFS.ExternalDirectoryPath + '/file.json';
+        ? RNFS.DocumentDirectoryPath + '/backup.json'
+        : RNFS.ExternalDirectoryPath + '/backup.json';
     console.log('File path: ' + this.path);
   }
 
@@ -123,4 +123,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(FileHandlePage);
+)(UserSettingsPage);
