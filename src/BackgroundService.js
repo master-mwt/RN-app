@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import firebase from 'firebase';
-import FirestoreDB from 'utils/FirestoreDB';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import FirestoreDB from './utils/FirestoreDB';
 import {userLogin, userLogout} from './actions';
 
 const firebaseConfig = {
@@ -18,20 +19,20 @@ const firebaseConfig = {
 class BackgroundService extends Component {
   constructor(props) {
     super(props);
-    console.log('Backgroundservice constructor()');
     /**
      * Firebase service initialization
      */
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     // Setup FirestoreDB
     let db = firebase.firestore();
     FirestoreDB.setDB(db);
   }
 
   componentDidMount() {
-    console.log('Backgroundservice componentDidMount()');
-    // Login/logout handling
+    // Login/logout handling listener
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.userLogin(user);

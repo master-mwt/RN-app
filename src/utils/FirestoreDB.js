@@ -1,6 +1,3 @@
-// TODO: import FirestoreDB and update JavascriptDOC returns
-// TODO: CLASS NOT READY !!
-
 /**
  * Class that handles the use of FirestoreDB
  */
@@ -11,17 +8,29 @@ class FirestoreDB {
    * @param db FirestoreDB instance
    */
   setDB(db) {
-    if (this._db) {
-      throw 'FirestoreDB already set';
+    if (!this._db) {
+      this._db = db;
     }
-    this._db = db;
+  }
+
+  /**
+   * Check if FirestoreDB is ready
+   *
+   * @returns {boolean}
+   */
+  isReady() {
+    if (this._db) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
    * Get data from FirestoreDB
    *
    * @param user A unique identifier for the user
-   * @returns {any | Promise<void> | Promise<any> | void | PromiseLike<any> | Promise<any>}
+   * @returns {Promise<firebase.firestore.DocumentSnapshot<T>>}
    */
   getData(user) {
     if (!this._db) {
@@ -45,7 +54,7 @@ class FirestoreDB {
    *
    * @param user A unique identifier for the user
    * @param data Data to store
-   * @returns {*}
+   * @returns {Promise<void>}
    */
   putData(user, data) {
     if (!this._db) {
