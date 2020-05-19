@@ -67,7 +67,9 @@ class TvShowEpisodePage extends Component {
         )}
         {this.state.tv_show_episode && (
           <View style={styles.container}>
-            <ScrollView style={styles.scrollview_container}>
+            <ScrollView
+              style={styles.scrollview_container}
+              showsVerticalScrollIndicator={false}>
               <View style={styles.box}>
                 <Image
                   style={styles.backdrop_image}

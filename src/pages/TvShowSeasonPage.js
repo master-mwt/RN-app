@@ -165,7 +165,8 @@ class TvShowSeasonPage extends Component {
                 )}
 
               {this.state.in_collection &&
-                this.state.number_of_seen_episodes !== 0 && (
+                this.state.number_of_seen_episodes ===
+                  this.state.total_number_of_episodes && (
                   <View style={styles.mark_all_button_container}>
                     <TouchableOpacity
                       style={styles.mark_all_as_not_seen_button}
