@@ -13,7 +13,12 @@ import {
 import * as API from '../api/Api';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
-import {addShowToCollection, removeShowFromCollection} from '../actions';
+import {
+  addShowToCollection,
+  episodeNotSeen,
+  episodeSeen,
+  removeShowFromCollection,
+} from '../actions';
 import {connect} from 'react-redux';
 
 class TvShowDetailsPage extends Component {
@@ -50,8 +55,7 @@ class TvShowDetailsPage extends Component {
   }
 
   markAllAsSeen() {
-    console.log('all seen');
-    /*let success = true;
+    let success = true;
     for (let i of this.props.collection) {
       if (i.id === this.props.route.params.item.id) {
         this.state.tv_show.seasons.map((season, key) => {
@@ -80,12 +84,11 @@ class TvShowDetailsPage extends Component {
       this.setState({
         number_of_seen_episodes: this.state.total_number_of_episodes,
       });
-    }*/
+    }
   }
 
   markAllAsNotSeen() {
-    console.log('all not seen');
-    /*let success = true;
+    let success = true;
     for (let i of this.props.collection) {
       if (i.id === this.props.route.params.item.id) {
         this.state.tv_show.seasons.map((season, key) => {
@@ -103,7 +106,7 @@ class TvShowDetailsPage extends Component {
                 }
               });
             })
-            .catch((error) => {
+            .catch(error => {
               console.log('error in markAllAsNotSeen');
               console.log(error);
               success = false;
@@ -115,7 +118,7 @@ class TvShowDetailsPage extends Component {
       this.setState({
         number_of_seen_episodes: 0,
       });
-    }*/
+    }
   }
 
   render() {
@@ -514,6 +517,12 @@ function mapDispatchToProps(dispatch) {
     },
     removeShowFromCollection: function(show) {
       dispatch(removeShowFromCollection(show));
+    },
+    episodeSeen: function(episode) {
+      dispatch(episodeSeen(episode));
+    },
+    episodeNotSeen: function(episode) {
+      dispatch(episodeNotSeen(episode));
     },
   };
 }

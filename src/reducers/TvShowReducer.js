@@ -30,12 +30,7 @@ export default function(state = INITIAL_STATE, action) {
         ],
       };
     case COLLECTION_WATCHED_EPISODES:
-      console.log(action.payload.episode.id);
-
-      console.log('before map');
-      console.log(state.shows);
-
-      let array = state.shows.map(show => {
+      let collection = state.shows.map(show => {
         if (show.id === action.payload.episode.tv_show_id) {
           return {
             id: show.id,
@@ -52,21 +47,12 @@ export default function(state = INITIAL_STATE, action) {
           };
         }
       });
-
-      console.log('after map');
-      console.log(array);
-
       return {
         ...state,
-        shows: [...array],
+        shows: [...collection],
       };
     case COLLECTION_NOT_WATCHED_EPISODES:
-      console.log(action.payload.episode.id);
-
-      console.log('before map');
-      console.log(state.shows);
-
-      let array_not_seen = state.shows.map(show => {
+      let filteredCollection = state.shows.map(show => {
         if (show.id === action.payload.episode.tv_show_id) {
           return {
             id: show.id,
@@ -87,18 +73,11 @@ export default function(state = INITIAL_STATE, action) {
           };
         }
       });
-
-      console.log('after map');
-      console.log(array_not_seen);
-
       return {
         ...state,
-        shows: [...array_not_seen],
+        shows: [...filteredCollection],
       };
     case COLLECTION_REFRESH:
-      console.log('refresh collection in reducer: ');
-      console.log([...action.payload.shows]);
-
       return {
         ...state,
         shows: [...action.payload.shows],

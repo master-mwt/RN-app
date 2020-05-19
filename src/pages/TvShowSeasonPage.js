@@ -40,13 +40,28 @@ class TvShowSeasonPage extends Component {
         if (i.id === this.props.route.params.item.tv_show_id) {
           this.setState({
             in_collection: true,
-            number_of_seen_episodes: i.seen_episodes.length,
+            number_of_seen_episodes: this.seenEpisodeCount(
+              i.seen_episodes,
+              res.episodes,
+            ),
             total_number_of_episodes: res.episodes.length,
           });
         }
       }
       console.log(this.state.tv_show_season);
     });
+  }
+
+  seenEpisodeCount(seenEpisodes, episodes) {
+    let count = 0;
+    for (let i of seenEpisodes) {
+      for (let j of episodes) {
+        if (i === j.id) {
+          count++;
+        }
+      }
+    }
+    return count;
   }
 
   episodeIsWatched(episodeId) {
@@ -150,8 +165,7 @@ class TvShowSeasonPage extends Component {
                 )}
 
               {this.state.in_collection &&
-                this.state.number_of_seen_episodes ===
-                  this.state.total_number_of_episodes && (
+                this.state.number_of_seen_episodes !== 0 && (
                   <View style={styles.mark_all_button_container}>
                     <TouchableOpacity
                       style={styles.mark_all_as_not_seen_button}
