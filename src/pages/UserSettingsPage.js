@@ -5,8 +5,12 @@ import {
   View,
   SafeAreaView,
   Platform,
-  Button,
+  Alert,
   StatusBar,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
@@ -16,7 +20,11 @@ class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: '',
+      message: '',
+      export_info:
+        'Export the current status of your collection by pressing the "EXPORT BACKUP" button.\n\n- ANDROID : \n\n- IOS : \n\nYou can easily access the backup file using a File Manager application.\n\nYou can also move this file between you devices and click on "IMPORT BACKUP" to synchronize your collection',
+      import_info:
+        'Import and synchronize your collection by pressing the "IMPORT BACKUP" button.\n\nThis action will rigenerate you collection on the current device from the informations on the backup file.\n\nThe backup file must therefore be present in one of the following paths (depending on your device):\n\n- ANDROID : \n\n- IOS : ',
     };
   }
 
@@ -44,67 +52,199 @@ class UserSettingsPage extends Component {
 
     RNFS.writeFile(path, JSON.stringify(state), 'utf8')
       .then(success => {
-        console.log('write successful');
-        this.setState({content: 'JSON exported'});
+        this.setState({message: 'Backup exported successfully!'});
+        this.renderAlert('SUCCESS');
       })
       .catch(error => {
-        console.log('write error');
-        this.setState({content: 'write error'});
+        this.setState({message: 'Export failure!'});
+        this.renderAlert('ERROR');
       });
   }
 
   readFile(path) {
     RNFS.readFile(path, 'utf8')
       .then(res => {
-        console.log('content: ' + res);
         this.setState({
-          content: res,
+          message: 'Backup imported successfully!',
         });
-
         let json = JSON.parse(res);
-        console.log('parsed JSON: ');
-        console.log(json.shows);
+        this.renderAlert('SUCCESS');
         this.props.refreshCollection(json.shows);
       })
       .catch(error => {
-        console.log('read error');
-        this.setState({content: 'read error'});
+        this.setState({
+          message:
+            "Import failure! Maybe the backup file doesn't exist, so first export your backup!",
+        });
+        this.renderAlert('ERROR');
       });
   }
 
+  renderAlert = title =>
+    Alert.alert(title, this.state.message, [{text: 'OK'}], {
+      cancelable: false,
+    });
+
   render() {
     return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}>
+      <SafeAreaView style={styles.main_container}>
         <StatusBar barStyle="light-content" backgroundColor="#d02860" />
-        <Text>{this.state.content}</Text>
-        <View style={{marginVertical: 10}}>
-          <Button
-            onPress={() => {
-              this.backupFile();
-            }}
-            title="Backup to JSON"
-            color="grey"
-          />
-        </View>
-        <View>
-          <Button
-            onPress={() => {
-              this.readFile(this.path);
-            }}
-            title="Restore from JSON"
-            color="grey"
-          />
-        </View>
+        <ScrollView
+          style={styles.scrollview_container}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <View style={styles.user_image_container}>
+              <Image
+                style={styles.user_image}
+                source={{
+                  uri:
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png',
+                }}
+              />
+            </View>
+            {/* insert login logic and redux user status checks */}
+            <View style={styles.user_data_container}>
+              <Text style={styles.user_data_text}>guest</Text>
+            </View>
+
+            <View style={styles.login_register_button_container}>
+              <TouchableOpacity
+                style={styles.login_button}
+                onPress={() => {
+                  this.props.navigation.navigate('login');
+                }}>
+                <Text style={styles.login_button_text}>login</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.login_register_button_container}>
+              <TouchableOpacity
+                style={styles.login_button}
+                onPress={() => {
+                  this.props.navigation.navigate('register');
+                }}>
+                <Text style={styles.login_button_text}>register</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.backup_info_container}>
+              <Text style={styles.backup_info_text}>
+                {this.state.export_info}
+              </Text>
+            </View>
+            <View style={styles.backup_button_container}>
+              <TouchableOpacity
+                style={styles.backup_button}
+                onPress={() => {
+                  this.backupFile();
+                }}>
+                <Text style={styles.backup_button_text}>export backup</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View>
+              <View style={styles.backup_info_container}>
+                <Text style={styles.backup_info_text}>
+                  {this.state.import_info}
+                </Text>
+              </View>
+              <View style={styles.backup_button_container}>
+                <TouchableOpacity
+                  style={styles.backup_button}
+                  onPress={() => {
+                    this.readFile(this.path);
+                  }}>
+                  <Text style={styles.backup_button_text}>import backup</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  main_container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+  },
+  scrollview_container: {
+    height: '100%',
+  },
+  user_image_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ddd',
+  },
+  user_image: {
+    width: 100,
+    height: 100,
+  },
+  user_data_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#bbb',
+    padding: 10,
+  },
+  user_data_text: {
+    fontSize: 20,
+  },
+  login_register_button_container: {},
+  login_button: {
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  login_button_text: {
+    fontSize: 15,
+    color: '#fff',
+    textTransform: 'uppercase',
+  },
+  register_button: {
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  register_button_text: {
+    fontSize: 15,
+    color: '#fff',
+    textTransform: 'uppercase',
+  },
+  backup_button_container: {},
+  backup_button: {
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  backup_button_text: {
+    fontSize: 15,
+    color: '#fff',
+    textTransform: 'uppercase',
+  },
+  backup_info_container: {
+    backgroundColor: '#ccc',
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  backup_info_text: {
+    fontSize: 15,
+  },
+});
 
 function mapStateToProps(state) {
   return {

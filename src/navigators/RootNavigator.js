@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+//import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -13,13 +13,15 @@ import TvShowsTopRatedPage from '../pages/TvShowsTopRatedPage';
 import TvShowsSearchPage from '../pages/TvShowsSearchPage';
 import TvShowSeasonPage from '../pages/TvShowSeasonPage';
 import TvShowEpisodePage from '../pages/TvShowEpisodePage';
-import FileHandlePage from '../pages/UserSettingsPage';
+import UserSettingsPage from '../pages/UserSettingsPage';
 import TvShowsCollectionPage from '../pages/UserCollectionPage';
+import UserLoginPage from '../pages/UserLoginPage';
+import UserRegisterPage from '../pages/UserRegisterPage';
 
 const StackNavigator = createStackNavigator();
 const MaterialTopTabNavigator = createMaterialTopTabNavigator();
 //const BottomTabNavigator = createBottomTabNavigator();
-const DrawerNavigator = createDrawerNavigator();
+//const DrawerNavigator = createDrawerNavigator();
 const MaterialBottomTabNavigator = createMaterialBottomTabNavigator();
 
 export default class RootNavigator extends Component {
@@ -188,7 +190,9 @@ export default class RootNavigator extends Component {
             color: '#fff',
           },
         }}>
-        <StackNavigator.Screen name="settings" component={FileHandlePage} />
+        <StackNavigator.Screen name="settings" component={UserSettingsPage} />
+        <StackNavigator.Screen name="login" component={UserLoginPage} />
+        <StackNavigator.Screen name="register" component={UserRegisterPage} />
       </StackNavigator.Navigator>
     );
 
