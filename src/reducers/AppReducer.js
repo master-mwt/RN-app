@@ -1,9 +1,4 @@
-import {
-  END_LOADING,
-  IN_LOADING,
-  USER_LOGGED_IN,
-  USER_LOGGED_OUT,
-} from '../stores/ActionType';
+import {USER_LOGGED_IN, USER_LOGGED_OUT} from '../stores/ActionType';
 
 const INITIAL_STATE = {
   loading: true,
@@ -20,16 +15,6 @@ export const sAppUserLogged = state => sApp(state).logged;
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case IN_LOADING:
-      return {
-        ...state,
-        loadingSeconds: state.loadingSeconds + 1,
-      };
-    case END_LOADING:
-      return {
-        ...state,
-        loading: false,
-      };
     case USER_LOGGED_IN:
       return {
         ...state,
