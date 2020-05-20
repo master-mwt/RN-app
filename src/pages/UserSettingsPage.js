@@ -15,6 +15,8 @@ import {
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {connect} from 'react-redux';
 import {refreshCollection} from '../actions';
+import FirebaseAuth from '../utils/FirebaseAuth';
+import {sAppUser, sAppUserLogged} from '../reducers/AppReducer';
 
 class UserSettingsPage extends Component {
   constructor(props) {
@@ -104,27 +106,56 @@ class UserSettingsPage extends Component {
             </View>
             {/* insert login logic and redux user status checks */}
             <View style={styles.user_data_container}>
-              <Text style={styles.user_data_text}>guest</Text>
+              {!this.props.logged && (
+                <Text style={styles.user_data_text}>guest</Text>
+              )}
+              {this.props.logged && (
+                <Text style={styles.user_data_text}>
+                  {this.props.user.email}
+                </Text>
+              )}
             </View>
 
-            <View style={styles.login_register_button_container}>
-              <TouchableOpacity
-                style={styles.login_button}
-                onPress={() => {
-                  this.props.navigation.navigate('login');
-                }}>
-                <Text style={styles.login_button_text}>login</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.login_register_button_container}>
-              <TouchableOpacity
-                style={styles.login_button}
-                onPress={() => {
-                  this.props.navigation.navigate('register');
-                }}>
-                <Text style={styles.login_button_text}>register</Text>
-              </TouchableOpacity>
-            </View>
+            {!this.props.logged && (
+              <View>
+                <View style={styles.login_register_button_container}>
+                  <TouchableOpacity
+                    style={styles.login_button}
+                    onPress={() => {
+                      this.props.navigation.navigate('login');
+                    }}>
+                    <Text style={styles.login_button_text}>login</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.login_register_button_container}>
+                  <TouchableOpacity
+                    style={styles.login_button}
+                    onPress={() => {
+                      this.props.navigation.navigate('register');
+                    }}>
+                    <Text style={styles.login_button_text}>register</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+
+            {this.props.logged && (
+              <View style={styles.login_register_button_container}>
+                <TouchableOpacity
+                  style={styles.login_button}
+                  onPress={() => {
+                    FirebaseAuth.signOut()
+                      .then(() => {
+                        console.log('sign out completed');
+                      })
+                      .catch(() => {
+                        console.log('error in sign out');
+                      });
+                  }}>
+                  <Text style={styles.login_button_text}>logout</Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
             <View style={styles.backup_info_container}>
               <Text style={styles.backup_info_text}>
@@ -154,6 +185,34 @@ class UserSettingsPage extends Component {
                     this.readFile(this.path);
                   }}>
                   <Text style={styles.backup_button_text}>import backup</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View>
+              <View style={styles.backup_info_container}>
+                <Text style={styles.backup_info_text}>Get data from DB</Text>
+              </View>
+              <View style={styles.backup_button_container}>
+                <TouchableOpacity
+                  style={styles.backup_button}
+                  onPress={() => {
+                    console.log('import from db');
+                  }}>
+                  <Text style={styles.backup_button_text}>import from db</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View>
+              <View style={styles.backup_info_container}>
+                <Text style={styles.backup_info_text}>Put data in DB</Text>
+              </View>
+              <View style={styles.backup_button_container}>
+                <TouchableOpacity
+                  style={styles.backup_button}
+                  onPress={() => {
+                    console.log('export in db');
+                  }}>
+                  <Text style={styles.backup_button_text}>export in db</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -249,6 +308,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
   return {
     collection: sTvShowGetUserShows(state),
+    logged: sAppUserLogged(state),
+    user: sAppUser(state),
   };
 }
 
