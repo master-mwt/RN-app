@@ -38,11 +38,13 @@ class TvShowDetailsPage extends Component {
 
   componentDidMount() {
     API.getTvShowDetails(this.props.route.params.item.id).then(res => {
+      this.setState({
+        total_number_of_episodes: res.number_of_episodes,
+      });
       for (let i of this.props.collection) {
         if (i.id === res.id) {
           this.setState({
             in_collection: true,
-            total_number_of_episodes: res.number_of_episodes,
             number_of_seen_episodes: i.seen_episodes.length,
           });
         }
@@ -50,7 +52,7 @@ class TvShowDetailsPage extends Component {
       this.setState({
         tv_show: res,
       });
-      console.log(this.state.tv_show);
+      //console.log(this.state.tv_show);
     });
   }
 

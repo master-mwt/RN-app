@@ -48,7 +48,7 @@ class TvShowSeasonPage extends Component {
           });
         }
       }
-      console.log(this.state.tv_show_season);
+      //console.log(this.state.tv_show_season);
     });
   }
 

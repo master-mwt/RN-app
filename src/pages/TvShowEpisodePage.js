@@ -51,7 +51,7 @@ class TvShowEpisodePage extends Component {
       this.setState({
         tv_show_episode: res,
       });
-      console.log(this.state.tv_show_episode);
+      //console.log(this.state.tv_show_episode);
     });
   }
 
