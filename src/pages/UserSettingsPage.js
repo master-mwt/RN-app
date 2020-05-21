@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import {refreshCollection} from '../actions';
 import FirebaseAuth from '../utils/FirebaseAuth';
 import {sAppUser, sAppUserLogged} from '../reducers/AppReducer';
+import FirestoreDB from '../utils/FirestoreDB';
 
 class UserSettingsPage extends Component {
   constructor(props) {
@@ -196,7 +197,26 @@ class UserSettingsPage extends Component {
                 <TouchableOpacity
                   style={styles.backup_button}
                   onPress={() => {
-                    console.log('import from db');
+                    console.log('import from db chosen');
+                    if (this.props.user && FirestoreDB.isReady()) {
+                      FirestoreDB.getData(this.props.user.email)
+                        .then(data => {
+                          if (data) {
+                            console.log('db import completed');
+                            console.log('data received: ');
+                            console.log(data);
+                            console.log('refreshing state');
+                            this.props.refreshCollection(data.shows);
+                          } else {
+                            console.log('no data');
+                          }
+                        })
+                        .catch(() => {
+                          console.log('db import error');
+                        });
+                    } else {
+                      console.log('import not possible');
+                    }
                   }}>
                   <Text style={styles.backup_button_text}>import from db</Text>
                 </TouchableOpacity>
@@ -210,7 +230,21 @@ class UserSettingsPage extends Component {
                 <TouchableOpacity
                   style={styles.backup_button}
                   onPress={() => {
-                    console.log('export in db');
+                    console.log('export in db chosen');
+                    if (this.props.user && FirestoreDB.isReady()) {
+                      let data = {
+                        shows: this.props.collection,
+                      };
+                      FirestoreDB.putData(this.props.user.email, data)
+                        .then(() => {
+                          console.log('db export completed');
+                        })
+                        .catch(() => {
+                          console.log('db export error');
+                        });
+                    } else {
+                      console.log('export not possible');
+                    }
                   }}>
                   <Text style={styles.backup_button_text}>export in db</Text>
                 </TouchableOpacity>
