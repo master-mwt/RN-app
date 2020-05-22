@@ -28,6 +28,20 @@ class TvShowSeasonPage extends Component {
     };
   }
 
+  onChildPageBack() {
+    for (let i of this.props.collection) {
+      if (i.id === this.props.route.params.item.tv_show_id) {
+        this.setState({
+          number_of_seen_episodes: this.seenEpisodeCount(
+            i.seen_episodes,
+            this.state.tv_show_season.episodes,
+          ),
+        });
+      }
+    }
+    console.log('back to parent form child page');
+  }
+
   componentDidMount() {
     API.getTvShowSeason(
       this.props.route.params.item.tv_show_id,
@@ -198,6 +212,9 @@ class TvShowSeasonPage extends Component {
                           season_number: this.state.tv_show_season
                             .season_number,
                           episode_number: episode.episode_number,
+                        },
+                        goBackHandler: () => {
+                          this.onChildPageBack();
                         },
                       });
                     }}>
