@@ -43,9 +43,17 @@ class TvShowDetailsPage extends Component {
       });
       for (let i of this.props.collection) {
         if (i.id === res.id) {
+          let specialsLength = 0;
+          if (
+            res.seasons &&
+            res.seasons[0] &&
+            res.seasons[0].season_number === 0
+          ) {
+            specialsLength = res.seasons[0].episode_count;
+          }
           this.setState({
             in_collection: true,
-            number_of_seen_episodes: i.seen_episodes.length,
+            number_of_seen_episodes: i.seen_episodes.length - specialsLength,
           });
         }
       }
@@ -54,6 +62,25 @@ class TvShowDetailsPage extends Component {
       });
       //console.log(this.state.tv_show);
     });
+  }
+
+  onChildPageBack() {
+    for (let i of this.props.collection) {
+      if (i.id === this.state.tv_show.id) {
+        let specialsLength = 0;
+        if (
+          this.state.tv_show.seasons &&
+          this.state.tv_show.seasons[0] &&
+          this.state.tv_show.seasons[0].season_number === 0
+        ) {
+          specialsLength = this.state.tv_show.seasons[0].episode_count;
+        }
+        this.setState({
+          number_of_seen_episodes: i.seen_episodes.length - specialsLength,
+        });
+      }
+    }
+    console.log('back to parent form child page');
   }
 
   markAllAsSeen() {
@@ -298,6 +325,9 @@ class TvShowDetailsPage extends Component {
                           item: {
                             tv_show_id: this.state.tv_show.id,
                             season_number: item.season_number,
+                          },
+                          goBackHandler: () => {
+                            this.onChildPageBack();
                           },
                         });
                       }}>
