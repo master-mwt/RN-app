@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {episodeNotSeen, episodeSeen} from '../actions';
 import {connect} from 'react-redux';
-import {OnBackBehaviour} from '../components/OnBackBehaviour';
 
 class TvShowSeasonPage extends Component {
   constructor(props) {
@@ -29,7 +28,7 @@ class TvShowSeasonPage extends Component {
     };
   }
 
-  onChildPageBack() {
+  refresh() {
     for (let i of this.props.collection) {
       if (i.id === this.props.route.params.item.tv_show_id) {
         this.setState({
@@ -40,7 +39,12 @@ class TvShowSeasonPage extends Component {
         });
       }
     }
-    console.log('back to parent form child page');
+  }
+
+  componentWillUnmount() {
+    if (this.OnFocusListener) {
+      this.props.navigation.removeListener('focus', this.eventListenerFunction);
+    }
   }
 
   componentDidMount() {
@@ -61,11 +65,19 @@ class TvShowSeasonPage extends Component {
             ),
             total_number_of_episodes: res.episodes.length,
           });
+          this.OnFocusListener = this.props.navigation.addListener(
+            'focus',
+            this.eventListenerFunction,
+          );
         }
       }
       //console.log(this.state.tv_show_season);
     });
   }
+
+  eventListenerFunction = () => {
+    this.refresh();
+  };
 
   seenEpisodeCount(seenEpisodes, episodes) {
     let count = 0;
@@ -136,7 +148,6 @@ class TvShowSeasonPage extends Component {
             color="#000"
           />
         )}
-        <OnBackBehaviour onBack={this.props.route.params.goBackHandler} />
         {this.state.tv_show_season && (
           <View style={styles.container}>
             <ScrollView
@@ -214,9 +225,6 @@ class TvShowSeasonPage extends Component {
                           season_number: this.state.tv_show_season
                             .season_number,
                           episode_number: episode.episode_number,
-                        },
-                        goBackHandler: () => {
-                          this.onChildPageBack();
                         },
                       });
                     }}>

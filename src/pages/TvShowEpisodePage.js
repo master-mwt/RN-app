@@ -14,7 +14,6 @@ import {sTvShowGetUserShows} from '../reducers/TvShowReducer';
 import {episodeNotSeen, episodeSeen} from '../actions';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {OnBackBehaviour} from '../components/OnBackBehaviour';
 
 class TvShowEpisodePage extends Component {
   constructor(props) {
@@ -66,7 +65,6 @@ class TvShowEpisodePage extends Component {
             color="#000"
           />
         )}
-        <OnBackBehaviour onBack={this.props.route.params.goBackHandler} />
         {this.state.tv_show_episode && (
           <View style={styles.container}>
             <ScrollView

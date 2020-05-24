@@ -55,6 +55,10 @@ class TvShowDetailsPage extends Component {
             in_collection: true,
             number_of_seen_episodes: i.seen_episodes.length - specialsLength,
           });
+          this.OnFocusListener = this.props.navigation.addListener(
+            'focus',
+            this.eventListenerFunction,
+          );
         }
       }
       this.setState({
@@ -64,7 +68,11 @@ class TvShowDetailsPage extends Component {
     });
   }
 
-  onChildPageBack() {
+  eventListenerFunction = () => {
+    this.refresh();
+  };
+
+  refresh() {
     for (let i of this.props.collection) {
       if (i.id === this.state.tv_show.id) {
         let specialsLength = 0;
@@ -80,7 +88,6 @@ class TvShowDetailsPage extends Component {
         });
       }
     }
-    console.log('back to parent form child page');
   }
 
   markAllAsSeen() {
@@ -150,6 +157,12 @@ class TvShowDetailsPage extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this.OnFocusListener) {
+      this.props.navigation.removeListener('focus', this.eventListenerFunction);
+    }
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.main_container}>
@@ -211,6 +224,10 @@ class TvShowDetailsPage extends Component {
                       name: this.state.tv_show.name,
                       seen_episodes: [],
                     });
+                    this.OnFocusListener = this.props.navigation.addListener(
+                      'focus',
+                      this.eventListenerFunction,
+                    );
                   }}
                   style={styles.add_button}>
                   <Icon
@@ -232,6 +249,10 @@ class TvShowDetailsPage extends Component {
                     this.props.removeShowFromCollection({
                       id: this.state.tv_show.id,
                     });
+                    this.props.navigation.removeListener(
+                      'focus',
+                      this.eventListenerFunction,
+                    );
                   }}>
                   <Icon
                     name="ios-remove-circle-outline"
@@ -325,9 +346,6 @@ class TvShowDetailsPage extends Component {
                           item: {
                             tv_show_id: this.state.tv_show.id,
                             season_number: item.season_number,
-                          },
-                          goBackHandler: () => {
-                            this.onChildPageBack();
                           },
                         });
                       }}>
