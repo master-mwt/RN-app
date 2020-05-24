@@ -70,16 +70,26 @@ class TvShowEpisodePage extends Component {
             <ScrollView
               style={styles.scrollview_container}
               showsVerticalScrollIndicator={false}>
-              <View style={styles.box}>
-                <Image
-                  style={styles.backdrop_image}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${
-                      this.state.tv_show_episode.still_path
-                    }`,
-                  }}
-                />
-              </View>
+              {this.state.tv_show_episode.still_path && (
+                <View style={styles.box}>
+                  <Image
+                    style={styles.backdrop_image}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500/${
+                        this.state.tv_show_episode.still_path
+                      }`,
+                    }}
+                  />
+                </View>
+              )}
+              {!this.state.tv_show_episode.still_path && (
+                <View style={styles.box}>
+                  <Image
+                    style={styles.backdrop_image}
+                    source={require('../../imgs/no_content.jpg')}
+                  />
+                </View>
+              )}
 
               <View style={styles.box}>
                 <Text style={styles.title}>
@@ -153,11 +163,13 @@ class TvShowEpisodePage extends Component {
                   )}
               </View>
 
-              <View style={styles.box}>
-                <Text style={styles.overview}>
-                  {this.state.tv_show_episode.overview}
-                </Text>
-              </View>
+              {this.state.tv_show_episode.overview !== '' && (
+                <View style={styles.box}>
+                  <Text style={styles.overview}>
+                    {this.state.tv_show_episode.overview}
+                  </Text>
+                </View>
+              )}
 
               <View style={styles.social_container}>
                 <View style={styles.social_container_col}>
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
   },
   meta_container_col: {
     flex: 1,
-    padding: 10,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -321,7 +333,8 @@ const styles = StyleSheet.create({
   overview: {
     fontSize: 15,
     backgroundColor: '#fff',
-    textAlign: 'left',
+    textAlign: 'justify',
+    paddingHorizontal: 10,
     //borderRadius: 5,
     paddingVertical: 5,
     overflow: 'hidden',

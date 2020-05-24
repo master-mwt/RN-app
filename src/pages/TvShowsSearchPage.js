@@ -107,14 +107,20 @@ export default class TvShowsSearchPage extends Component {
                         },
                       });
                     }}>
-                    <Image
-                      style={styles.card_image}
-                      source={{
-                        uri: `https://image.tmdb.org/t/p/w500/${
-                          item.poster_path
-                        }`,
-                      }}
-                    />
+                    {item.poster_path && (
+                      <Image
+                        style={styles.card_image}
+                        source={{
+                          uri: `https://image.tmdb.org/t/p/w500/${
+                            item.poster_path
+                          }`,
+                        }}
+                      />
+                    )}
+                    {!item.poster_path && <Image
+                        style={styles.card_image}
+                        source={require('../../imgs/no_content.jpg')}
+                      />}
                     <View style={styles.card_text_container}>
                       <Text numberOfLines={1} style={styles.card_text}>
                         {item.name}
@@ -157,10 +163,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
   },
-  empty_search: {
-    color: '#555',
-    fontSize: 15,
-  },
+  // empty_search: {
+  //   color: '#555',
+  //   fontSize: 15,
+  // },
   flat_list: {
     height: '100%',
   },
@@ -169,7 +175,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   card: {
-    backgroundColor: '#555',
+    backgroundColor: '#ccc',
     padding: 3,
     borderRadius: 5,
   },
@@ -183,7 +189,7 @@ const styles = StyleSheet.create({
   },
   card_text: {
     textAlign: 'center',
-    color: '#fff',
+    color: '#000',
     fontSize: 15,
     fontWeight: 'bold',
   },

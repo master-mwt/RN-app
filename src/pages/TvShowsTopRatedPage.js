@@ -3,7 +3,8 @@ import * as API from '../api/Api';
 import {
   FlatList,
   Image,
-  SafeAreaView, StatusBar,
+  SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -72,12 +73,22 @@ export default class TvShowsTopRatedPage extends Component {
                     },
                   });
                 }}>
-                <Image
-                  style={styles.card_image}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${item.poster_path}`,
-                  }}
-                />
+                {item.poster_path && (
+                  <Image
+                    style={styles.card_image}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500/${
+                        item.poster_path
+                      }`,
+                    }}
+                  />
+                )}
+                {!item.poster_path && (
+                  <Image
+                    style={styles.card_image}
+                    source={require('../../imgs/no_content.jpg')}
+                  />
+                )}
                 <View style={styles.card_text_container}>
                   <Text numberOfLines={1} style={styles.card_text}>
                     {item.name}

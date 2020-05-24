@@ -64,7 +64,6 @@ class TvShowDetailsPage extends Component {
       this.setState({
         tv_show: res,
       });
-      //console.log(this.state.tv_show);
     });
   }
 
@@ -177,16 +176,27 @@ class TvShowDetailsPage extends Component {
           <ScrollView
             style={styles.scrollview_container}
             showsVerticalScrollIndicator={false}>
-            <View style={styles.backdrop_image_container}>
-              <Image
-                style={styles.backdrop_image}
-                source={{
-                  uri: `https://image.tmdb.org/t/p/w500/${
-                    this.state.tv_show.backdrop_path
-                  }`,
-                }}
-              />
-            </View>
+            {!this.state.tv_show.backdrop_image && (
+              <View style={styles.backdrop_image_container}>
+                <Image
+                  style={styles.backdrop_image}
+                  source={{
+                    uri: `https://image.tmdb.org/t/p/w500/${
+                      this.state.tv_show.backdrop_path
+                    }`,
+                  }}
+                />
+              </View>
+            )}
+            {this.state.tv_show.backdrop_image && (
+              <View style={styles.backdrop_image_container}>
+                <Image
+                  style={styles.backdrop_image}
+                  source={require('../../imgs/no_content.jpg')}
+                />
+              </View>
+            )}
+
             <View style={styles.box}>
               <Text style={styles.title}>{this.state.tv_show.name}</Text>
             </View>
@@ -349,14 +359,22 @@ class TvShowDetailsPage extends Component {
                           },
                         });
                       }}>
-                      <Image
-                        style={styles.card_image}
-                        source={{
-                          uri: `https://image.tmdb.org/t/p/w500/${
-                            item.poster_path
-                          }`,
-                        }}
-                      />
+                      {item.poster_path && (
+                        <Image
+                          style={styles.card_image}
+                          source={{
+                            uri: `https://image.tmdb.org/t/p/w500/${
+                              item.poster_path
+                            }`,
+                          }}
+                        />
+                      )}
+                      {!item.poster_path && (
+                        <Image
+                          style={styles.card_image}
+                          source={require('../../imgs/no_content.jpg')}
+                        />
+                      )}
                       <View style={styles.card_text_container}>
                         <Text numberOfLines={1} style={styles.card_text}>
                           {item.name}

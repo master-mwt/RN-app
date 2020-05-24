@@ -40,21 +40,28 @@ class UserCollectionPage extends Component {
                 <TouchableOpacity
                   style={styles.card}
                   onPress={() => {
-                    // passare l oggetto alla pagina (anche l id)
                     this.props.navigation.navigate('tv_show_details', {
                       item: {
                         id: item.id,
                       },
                     });
                   }}>
-                  <Image
-                    style={styles.card_image}
-                    source={{
-                      uri: `https://image.tmdb.org/t/p/w500/${
-                        item.poster_path
-                      }`,
-                    }}
-                  />
+                  {item.poster_path && (
+                    <Image
+                      style={styles.card_image}
+                      source={{
+                        uri: `https://image.tmdb.org/t/p/w500/${
+                          item.poster_path
+                        }`,
+                      }}
+                    />
+                  )}
+                  {!item.poster_path && (
+                    <Image
+                      style={styles.card_image}
+                      source={require('../../imgs/no_content.jpg')}
+                    />
+                  )}
                   <View style={styles.card_text_container}>
                     <Text numberOfLines={1} style={styles.card_text}>
                       {item.name}

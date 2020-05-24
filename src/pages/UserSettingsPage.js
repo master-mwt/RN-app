@@ -24,9 +24,9 @@ class UserSettingsPage extends Component {
     this.state = {
       message: '',
       export_info:
-        'Export the current status of your collection by pressing the "EXPORT BACKUP" button.\n\n- ANDROID : \n\n- IOS : \n\nYou can easily access the backup file using a File Manager application.\n\nYou can also move this file between you devices and click on "IMPORT BACKUP" to synchronize your collection',
+        'Export the current status of your collection by pressing the "EXPORT BACKUP" button.\n\nYou can easily access the backup file using a File Manager application.\n\nYou can also move this file between you devices and click on "IMPORT BACKUP" to synchronize your collection',
       import_info:
-        'Import and synchronize your collection by pressing the "IMPORT BACKUP" button.\n\nThis action will rigenerate you collection on the current device from the informations on the backup file.\n\nThe backup file must therefore be present in one of the following paths (depending on your device):\n\n- ANDROID : \n\n- IOS : ',
+        'Import and synchronize your collection by pressing the "IMPORT BACKUP" button.\n\nThis action will rigenerate you collection on the current device from the informations on the backup file.\n\nThe backup file must therefore be present in your app system folder path (depending on your device).',
     };
   }
 
@@ -98,10 +98,7 @@ class UserSettingsPage extends Component {
             <View style={styles.user_image_container}>
               <Image
                 style={styles.user_image}
-                source={{
-                  uri:
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1200px-User_font_awesome.svg.png',
-                }}
+                source={require('../../imgs/user_profile.png')}
               />
             </View>
             {/* insert login logic and redux user status checks */}
@@ -157,6 +154,8 @@ class UserSettingsPage extends Component {
               </View>
             )}
 
+            <View style={styles.separator} />
+
             <View style={styles.backup_info_container}>
               <Text style={styles.backup_info_text}>
                 {this.state.export_info}
@@ -188,7 +187,7 @@ class UserSettingsPage extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            <View>
+            {/* <View>
               <View style={styles.backup_info_container}>
                 <Text style={styles.backup_info_text}>Get data from DB</Text>
               </View>
@@ -201,8 +200,8 @@ class UserSettingsPage extends Component {
                   <Text style={styles.backup_button_text}>import from db</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-            <View>
+            </View> */}
+            {/* <View>
               <View style={styles.backup_info_container}>
                 <Text style={styles.backup_info_text}>Put data in DB</Text>
               </View>
@@ -215,7 +214,7 @@ class UserSettingsPage extends Component {
                   <Text style={styles.backup_button_text}>export in db</Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -240,7 +239,7 @@ const styles = StyleSheet.create({
   user_image_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ddd',
+    //backgroundColor: '#ddd',
   },
   user_image: {
     width: 100,
@@ -249,13 +248,15 @@ const styles = StyleSheet.create({
   user_data_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#bbb',
+    //backgroundColor: '#bbb',
     padding: 10,
   },
   user_data_text: {
     fontSize: 20,
   },
-  login_register_button_container: {},
+  login_register_button_container: {
+    padding: 10,
+  },
   login_button: {
     backgroundColor: '#000',
     justifyContent: 'center',
@@ -280,7 +281,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     textTransform: 'uppercase',
   },
-  backup_button_container: {},
+  separator: {
+    padding: 10,
+  },
+  backup_button_container: {
+    padding: 10,
+  },
   backup_button: {
     backgroundColor: '#000',
     justifyContent: 'center',
@@ -294,13 +300,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   backup_info_container: {
-    backgroundColor: '#ccc',
-    padding: 10,
+    backgroundColor: '#ddd',
+    padding: 15,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
   },
   backup_info_text: {
+    textAlign: 'justify',
     fontSize: 15,
   },
 });

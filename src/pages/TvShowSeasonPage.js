@@ -153,16 +153,26 @@ class TvShowSeasonPage extends Component {
             <ScrollView
               style={styles.scrollview_container}
               showsVerticalScrollIndicator={false}>
-              <View style={styles.box}>
-                <Image
-                  style={styles.backdrop_image}
-                  source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${
-                      this.state.tv_show_season.poster_path
-                    }`,
-                  }}
-                />
-              </View>
+              {this.state.tv_show_season.poster_path && (
+                <View style={styles.box}>
+                  <Image
+                    style={styles.backdrop_image}
+                    source={{
+                      uri: `https://image.tmdb.org/t/p/w500/${
+                        this.state.tv_show_season.poster_path
+                      }`,
+                    }}
+                  />
+                </View>
+              )}
+              {!this.state.tv_show_season.poster_path && (
+                <View style={styles.box}>
+                  <Image
+                    style={styles.backdrop_image}
+                    source={require('../../imgs/no_content.jpg')}
+                  />
+                </View>
+              )}
               <View style={styles.box}>
                 <Text style={styles.title}>
                   {this.state.tv_show_season.name}
