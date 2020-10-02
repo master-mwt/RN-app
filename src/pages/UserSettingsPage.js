@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import {refreshCollection} from '../actions';
 import FirebaseAuth from '../utils/FirebaseAuth';
 import {sAppUser, sAppUserLogged} from '../reducers/AppReducer';
+import * as LocalServer from '../utils/LocalServer';
 
 class UserSettingsPage extends Component {
   constructor(props) {
@@ -187,34 +188,70 @@ class UserSettingsPage extends Component {
                 </TouchableOpacity>
               </View>
             </View>
-            {/* <View>
+            <View>
               <View style={styles.backup_info_container}>
-                <Text style={styles.backup_info_text}>Get data from DB</Text>
+                <Text style={styles.backup_info_text}>
+                  Get data from database
+                </Text>
               </View>
               <View style={styles.backup_button_container}>
                 <TouchableOpacity
                   style={styles.backup_button}
                   onPress={() => {
-                    console.log('import from db');
+                    LocalServer.getData(this.props.user.email)
+                      .then(data => {
+                        if (data) {
+                          this.setState({
+                            message: 'Backup imported successfully!',
+                          });
+                          this.props.refreshCollection(data);
+                          this.renderAlert('SUCCESS');
+                        }
+                      })
+                      .catch(error => {
+                        this.setState({
+                          message: 'Import failure!',
+                        });
+                        this.renderAlert('ERROR');
+                      });
                   }}>
-                  <Text style={styles.backup_button_text}>import from db</Text>
+                  <Text style={styles.backup_button_text}>
+                    import from remote database
+                  </Text>
                 </TouchableOpacity>
               </View>
-            </View> */}
-            {/* <View>
+            </View>
+            <View>
               <View style={styles.backup_info_container}>
-                <Text style={styles.backup_info_text}>Put data in DB</Text>
+                <Text style={styles.backup_info_text}>
+                  Put data in database
+                </Text>
               </View>
               <View style={styles.backup_button_container}>
                 <TouchableOpacity
                   style={styles.backup_button}
                   onPress={() => {
-                    console.log('export in db');
+                    LocalServer.putData(
+                      this.props.user.email,
+                      this.props.collection,
+                    )
+                      .then(data => {
+                        this.setState({
+                          message: 'Backup exported successfully!',
+                        });
+                        this.renderAlert('SUCCESS');
+                      })
+                      .catch(error => {
+                        this.setState({message: 'Export failure!'});
+                        this.renderAlert('ERROR');
+                      });
                   }}>
-                  <Text style={styles.backup_button_text}>export in db</Text>
+                  <Text style={styles.backup_button_text}>
+                    export in remote database
+                  </Text>
                 </TouchableOpacity>
               </View>
-            </View> */}
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>

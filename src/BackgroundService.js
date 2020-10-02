@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as firebase from 'firebase';
-import 'firebase/firestore';
-import FirestoreDB from './utils/FirestoreDB';
 import {userLogin, userLogout} from './actions';
 
 const firebaseConfig = {
@@ -27,8 +25,8 @@ class BackgroundService extends Component {
       firebase.initializeApp(firebaseConfig);
     }
     // Setup FirestoreDB
-    let db = firebase.firestore();
-    FirestoreDB.setDB(db);
+    /*let db = firebase.firestore();
+    FirestoreDB.setDB(db);*/
   }
 
   componentDidMount() {
