@@ -209,7 +209,12 @@ class UserSettingsPage extends Component {
               </View>
               <View style={styles.backup_button_container}>
                 <TouchableOpacity
-                  style={styles.backup_button}
+                  style={
+                    !this.props.logged
+                      ? styles.backup_button_disabled
+                      : styles.backup_button
+                  }
+                  disabled={!this.props.logged}
                   onPress={() => {
                     LocalServer.putData(
                       this.props.user.email,
@@ -238,7 +243,12 @@ class UserSettingsPage extends Component {
               </View>
               <View style={styles.backup_button_container}>
                 <TouchableOpacity
-                  style={styles.backup_button}
+                  style={
+                    !this.props.logged
+                      ? styles.backup_button_disabled
+                      : styles.backup_button
+                  }
+                  disabled={!this.props.logged}
                   onPress={() => {
                     LocalServer.getData(this.props.user.email)
                       .then(data => {
@@ -335,6 +345,13 @@ const styles = StyleSheet.create({
   },
   backup_button: {
     backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  backup_button_disabled: {
+    backgroundColor: '#C0C0C0',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
