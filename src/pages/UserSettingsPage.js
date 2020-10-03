@@ -24,10 +24,14 @@ class UserSettingsPage extends Component {
     super(props);
     this.state = {
       message: '',
-      export_info:
-        'Export the current status of your collection by pressing the "EXPORT BACKUP" button.\n\nYou can easily access the backup file using a File Manager application.\n\nYou can also move this file between you devices and click on "IMPORT BACKUP" to synchronize your collection',
-      import_info:
-        'Import and synchronize your collection by pressing the "IMPORT BACKUP" button.\n\nThis action will rigenerate you collection on the current device from the informations on the backup file.\n\nThe backup file must therefore be present in your app system folder path (depending on your device).',
+      local_export_info:
+        'Export the current status of your collection by pressing the "LOCAL EXPORT" button.\n\nYou can easily access the backup file using a File Manager application.\n\nYou can also move this file between you devices and click on "LOCAL IMPORT" to synchronize your collection',
+      remote_export_info:
+        'Export the current status of your collection by pressing the "REMOTE EXPORT" button.\n\nThis action will export the content of your collection to the remote application database.\n\nYou can click on "REMOTE IMPORT" to synchronize your collection',
+      local_import_info:
+        'Import and synchronize your collection by pressing the "LOCAL IMPORT" button.\n\nThis action will rigenerate you collection on the current device from the informations on the backup file.\n\nThe backup file must therefore be present in your app system folder path (depending on your device).',
+      remote_import_info:
+        'Import and synchronize your collection by pressing the "REMOTE IMPORT" button.\n\nThis action will rigenerate you collection on the current device from the informations on the remote application database.',
     };
   }
 
@@ -157,9 +161,13 @@ class UserSettingsPage extends Component {
 
             <View style={styles.separator} />
 
+            <View style={styles.backup_info_section}>
+              <Text style={styles.backup_info_section_text}>LOCAL ACTIONS</Text>
+            </View>
+
             <View style={styles.backup_info_container}>
               <Text style={styles.backup_info_text}>
-                {this.state.export_info}
+                {this.state.local_export_info}
               </Text>
             </View>
             <View style={styles.backup_button_container}>
@@ -168,14 +176,14 @@ class UserSettingsPage extends Component {
                 onPress={() => {
                   this.backupFile();
                 }}>
-                <Text style={styles.backup_button_text}>export backup</Text>
+                <Text style={styles.backup_button_text}>local export</Text>
               </TouchableOpacity>
             </View>
 
             <View>
               <View style={styles.backup_info_container}>
                 <Text style={styles.backup_info_text}>
-                  {this.state.import_info}
+                  {this.state.local_import_info}
                 </Text>
               </View>
               <View style={styles.backup_button_container}>
@@ -184,14 +192,48 @@ class UserSettingsPage extends Component {
                   onPress={() => {
                     this.readFile(this.path);
                   }}>
-                  <Text style={styles.backup_button_text}>import backup</Text>
+                  <Text style={styles.backup_button_text}>local import</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View>
+              <View style={styles.backup_info_section}>
+                <Text style={styles.backup_info_section_text}>
+                  REMOTE ACTIONS (require login)
+                </Text>
+              </View>
+              <View style={styles.backup_info_container}>
+                <Text style={styles.backup_info_text}>
+                  {this.state.remote_export_info}
+                </Text>
+              </View>
+              <View style={styles.backup_button_container}>
+                <TouchableOpacity
+                  style={styles.backup_button}
+                  onPress={() => {
+                    LocalServer.putData(
+                      this.props.user.email,
+                      this.props.collection,
+                    )
+                      .then(data => {
+                        this.setState({
+                          message: 'Backup exported successfully!',
+                        });
+                        this.renderAlert('SUCCESS');
+                      })
+                      .catch(error => {
+                        this.setState({message: 'Export failure!'});
+                        this.renderAlert('ERROR');
+                      });
+                  }}>
+                  <Text style={styles.backup_button_text}>remote export</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <View>
               <View style={styles.backup_info_container}>
                 <Text style={styles.backup_info_text}>
-                  Get data from database
+                  {this.state.remote_import_info}
                 </Text>
               </View>
               <View style={styles.backup_button_container}>
@@ -215,40 +257,7 @@ class UserSettingsPage extends Component {
                         this.renderAlert('ERROR');
                       });
                   }}>
-                  <Text style={styles.backup_button_text}>
-                    import from remote database
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View>
-              <View style={styles.backup_info_container}>
-                <Text style={styles.backup_info_text}>
-                  Put data in database
-                </Text>
-              </View>
-              <View style={styles.backup_button_container}>
-                <TouchableOpacity
-                  style={styles.backup_button}
-                  onPress={() => {
-                    LocalServer.putData(
-                      this.props.user.email,
-                      this.props.collection,
-                    )
-                      .then(data => {
-                        this.setState({
-                          message: 'Backup exported successfully!',
-                        });
-                        this.renderAlert('SUCCESS');
-                      })
-                      .catch(error => {
-                        this.setState({message: 'Export failure!'});
-                        this.renderAlert('ERROR');
-                      });
-                  }}>
-                  <Text style={styles.backup_button_text}>
-                    export in remote database
-                  </Text>
+                  <Text style={styles.backup_button_text}>remote import</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -346,6 +355,19 @@ const styles = StyleSheet.create({
   backup_info_text: {
     textAlign: 'justify',
     fontSize: 15,
+  },
+  backup_info_section: {
+    backgroundColor: '#34495e',
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  backup_info_section_text: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#fff',
   },
 });
 
