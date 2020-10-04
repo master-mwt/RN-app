@@ -26,6 +26,7 @@ export default class TvShowsSearchPage extends Component {
     this.handleChangeText = function(text) {
       this.setState({
         query: text,
+        page: 1,
       });
       if (text && text.length !== 0) {
         this.setState({loading: true});
